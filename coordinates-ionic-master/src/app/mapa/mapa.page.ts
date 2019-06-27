@@ -22,6 +22,7 @@ import { Entrada } from '../entrada';
 import { ModalController } from '@ionic/angular';
 import { ModalSendPointPage } from '../modal-send-point/modal-send-point.page';
 import { Router } from '@angular/router';
+import { HTTP } from '@ionic-native/http/ngx';
 
 declare var google;
 
@@ -220,7 +221,7 @@ export class MapaPage implements OnInit {
       this.setLatLng(geoposition.coords.latitude,geoposition.coords.longitude);
       const mapEle: HTMLElement = document.getElementById('map');
       this.mapRef = new google.maps.Map(mapEle, {
-        center: {lat: geoposition.coords.latitude, lng: geoposition.coords.longitude},
+        center: {lat: this.lat, lng: this.lng},
         zoom: 11
       });
 
@@ -253,7 +254,15 @@ export class MapaPage implements OnInit {
           });
         }      
         console.log('lat: '+this.lat+' lng: '+this.lng);
+
+        var json;
+        this.http
+
         this.myMark = this.addMyMaker(this.lat, this.lng,null,"assets/icon/mylocation.png");
+        this.pickUp(this.myMark);
+        this.myMark = this.addMyMaker(-3.0773288, -60.0375211,null,"assets/icon/mylocation.png");
+        this.pickUp(this.myMark);
+        this.myMark = this.addMyMaker(-3.0538377, -59.9961773,null,"assets/icon/mylocation.png");
         this.pickUp(this.myMark);
       });
 ///
@@ -401,7 +410,11 @@ export class MapaPage implements OnInit {
               '</div>'
         );
         this.myMark = this.addMyMaker(this.lat, this.lng,null,"assets/icon/mylocation.png");
-        this.pickUp(this.myMark);      
+        this.pickUp(this.myMark);   
+        this.myMark = this.addMyMaker(this.lat, this.lng,null,"assets/icon/mylocation.png");
+        this.pickUp(this.myMark);
+        this.myMark = this.addMyMaker(this.lat, this.lng,null,"assets/icon/mylocation.png");
+        this.pickUp(this.myMark);   
         //window.location.reload();
       }
       
