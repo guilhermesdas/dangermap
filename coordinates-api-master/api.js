@@ -180,8 +180,6 @@ app.post('/coordinate/delete', function(req, res, next) {
 	//res.redirect('/');  
 });
 
-
-
 /*
 https://mongoosejs.com/docs/api.html
 
@@ -327,7 +325,7 @@ app.post('/user/delete', function(req, res, next) {
 	"password": "String"
 }
 
-*/
+*/baseUrl
 
 app.get("/type", (req, res) => {
 	console.log("listing all types.");	
