@@ -13,10 +13,6 @@ var LinkSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    foundedKeywords_id: {
-        type: [Number],
-        required: true
-    },
     visitedOn: {
         type: Date,
         required: true
