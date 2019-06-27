@@ -325,7 +325,7 @@ app.post('/user/delete', function(req, res, next) {
 	"password": "String"
 }
 
-*/baseUrl
+*/
 
 app.get("/type", (req, res) => {
 	console.log("listing all types.");	

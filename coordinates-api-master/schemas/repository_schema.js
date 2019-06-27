@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var links = require('links_schema.js');
+//var links_schema = require('./links_schema.js');
+//var keywords_schema = require('./keywords_schema.js')
 
 var RepositorySchema = new mongoose.Schema({
 
