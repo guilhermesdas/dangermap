@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var Repository = require('../schemas/repository_schema.js');
 
+// Json example of repository data comming via post
 var REPOSITORY_JSONIN = 
 {
 	links_id: 1,
@@ -11,21 +12,19 @@ var REPOSITORY_JSONIN =
     foundedKeywords_id: [1]
 }
 
+// /repository/ will return all repository
 router.get("/", (req, res) => {
 	console.log("listing all repository.");	
 	Repository.find({}, (err,repository) => {
 		if (err) {
-			res.setHeader('Access-Control-Allow-Origin','*');
 			res.send(err);
 		} else {
-			//res.json(pontos);
-			//console.log(repository);
-			res.setHeader('Access-Control-Allow-Origin','*');
 			res.send(repository);
 		}		
 	})
 });
 
+// /repository/add will add a repository
 router.post("/add", urlencodedParser, (req, res) => {
 
 	var json = Object.assign({}, REPOSITORY_JSONIN);
