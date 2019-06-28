@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var database = "mongodb://localhost:27017/test";
 var mongoose = require("mongoose");
-var repository = require('./routes/repository.js');
-var users = require('./routes/users.js');
+var repository = require('./routes/repository.js.js');
+var users = require('./routes/users.js.js');
 
 // Mongodb connection
 mongoose.Promise = global.Promise;

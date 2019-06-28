@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
-var Repository = require('../schemas/users_schema.js');
+var Repository = require('../schemas/users_schema.js.js');
 
 // Json example of user data comming via post
 var USER_JSONIN = 
@@ -61,6 +61,29 @@ router.post("/signin", urlencodedParser, (req, res) => {
         }
     });
 
+});
+
+// /users/delte will delete user
+router.post("/delete", urlencodedParser, (req, res) => {
+
+    // Take received data in json
+    var json = Object.assign({}, USER_JSONIN);
+    json = req.body;
+    
+    delete_json = {
+        "username": json.username,
+        "password": json.password
+    }
+
+    // Delete user
+	var v = User.delete(delete_json);
+	if (v == null || v == undefined)
+		return res.send({ status: false });
+	else{
+		console.log("new user created:\n", json);
+		return res.send({status: true})
+    }
+    
 });
 
 module.exports = router;
