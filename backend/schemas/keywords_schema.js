@@ -9,7 +9,7 @@ var KeywordsSchema = new mongoose.Schema({
         trim: true
     },
     blacklist: {
-        type: boolean,
+        type: Boolean,
         required: true
     }
 });

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 //var links_schema = require('./links_schema.js');
 //var keywords_schema = require('./keywords_schema.js')
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 var RepositorySchema = new mongoose.Schema({
 
@@ -10,13 +11,14 @@ var RepositorySchema = new mongoose.Schema({
         unique: true
     },
     neighborhood_id: {
-        type: Number,
-        required: true
+        type: ObjectId,
+        required: true,
+        ref:'Keywords'
     },
-    foundedKeywords_id: {
-        type: [Number],
-        required: true
-    }
+    foundedKeywords_ids:[{
+        type: ObjectId,
+        ref: 'Keywords'
+    }] 
 });
 
 var Repository = mongoose.model('Repository', RepositorySchema);

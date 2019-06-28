@@ -9,6 +9,7 @@ var database = "mongodb://localhost:27017/test";
 var mongoose = require("mongoose");
 var repository = require('./routes/repository.js');
 var users = require('./routes/users.js');
+var keywords = require('./routes/keywords.js')
 
 // Mongodb connection
 mongoose.Promise = global.Promise;
@@ -24,6 +25,7 @@ app.listen(port, () => {
 // Import routes
 app.use('/repository', repository);
 app.use('/users', users)
+app.use('/keywords', keywords)
 
 app.get("/", (req, res) => {
 	res.send("Welcome to Eye of Thundera!.");

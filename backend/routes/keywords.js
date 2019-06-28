@@ -2,38 +2,37 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
-var Repository = require('../schemas/repository_schema.js');
+var Keywords = require('../schemas/keywords_schema.js');
 
-// Json example of repository data comming via post
-var REPOSITORY_JSONIN = 
+// Json example of keywords data comming via post
+var KEYWORDS_JSONIN = 
 {
-	links_id: 1,
-	neighborhood_id: 2,
-    foundedKeywords_id: [1]
+	keyword: "das",
+	blacklist: false
 }
 
-// /repository/ will return all repository
+// /keywords/ will return all keywords
 router.get("/", (req, res) => {
-	console.log("listing all repository.");	
-	Repository.find({}, (err,repository) => {
+	console.log("listing all keywords.");	
+	Keywords.find({}, (err,keywords) => {
 		if (err) {
 			res.send(err);
 		} else {
-			res.send(repository);
+			res.send(keywords);
 		}		
 	})
 });
 
-// /repository/add will add a repository
+// /keywords/add will add a new keyword
 router.post("/add", urlencodedParser, (req, res) => {
 
-	var json = Object.assign({}, REPOSITORY_JSONIN);
-	json = req.body;
-	var v = Repository.create(json)
+	//var json = Object.assign({}, KEYWORDS_JSONIN);
+	var json = req.body;
+	var v = Keywords.create(json)
 	if (v == null || v == undefined)
 		return res.send({ status: false });
 	else{
-		console.log("new repository added:\n", json);
+		console.log("new keyword added:\n", json);
 		return res.send({status: true})
 	}
 
