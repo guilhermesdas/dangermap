@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
-var keywords = require('keywords_schema.js');
-var neighborhood = require('neighborhood_schema.js')
 
 var LinkSchema = new mongoose.Schema({
 
     link: {
         type: String,
         required: true,
+        unique: true,
         trim: true
     },
     isBaseURL: {
@@ -15,10 +14,10 @@ var LinkSchema = new mongoose.Schema({
     },
     visitedOn: {
         type: Date,
-        required: true
+        required: false
     }
 });
 
-var Link = mongoose.model('Link', LinkSchema);
+var Link = mongoose.model('Links', LinkSchema);
 
 module.exports = Link;

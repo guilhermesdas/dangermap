@@ -16,11 +16,4 @@ var KeywordsSchema = new mongoose.Schema({
 
 var Keywords = mongoose.model('Keywords', KeywordsSchema);
 
-Keywords.find( {}, (err, size) => {
-
-    if ( err )
-        return;
-
-});
-
 module.exports = Keywords;
