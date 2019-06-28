@@ -17,12 +17,8 @@ router.get("/", (req, res) => {
 	console.log("listing all repository.");	
 	Repository.find({}, (err,repository) => {
 		if (err) {
-			res.setHeader('Access-Control-Allow-Origin','*');
 			res.send(err);
 		} else {
-			//res.json(pontos);
-			//console.log(repository);
-			res.setHeader('Access-Control-Allow-Origin','*');
 			res.send(repository);
 		}		
 	})
