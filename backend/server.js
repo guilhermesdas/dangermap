@@ -8,6 +8,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 var database = "mongodb://localhost:27017/test";
 var mongoose = require("mongoose");
 var repository = require('./routes/repository.js');
+var users = require('./routes/users.js');
 
 // Mongodb connection
 mongoose.Promise = global.Promise;
@@ -20,8 +21,9 @@ app.listen(port, () => {
 	console.log("Eye of Thundera is listening on port " + port);
 });
 
-// Use repository post acess
+// Import routes
 app.use('/repository', repository);
+app.use('/users', users)
 
 app.get("/", (req, res) => {
 	res.send("Welcome to Eye of Thundera!.");
