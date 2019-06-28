@@ -50,9 +50,23 @@ def addlinks():
         ans = post(baseurl+"links/add/",jsondata)
         print(ans)
 
+# add neighborhoods
+def addneighborhoods():
+    # get list of links from file
+    neighborhood = getlines("neighborhood")
 
-addkeywords()
-addlinks()
+    for bairro in neighborhood:
+        # create json for given keyword
+        jsondata = {
+            "name": bairro
+        }
+        # make post to add in database
+        ans = post(baseurl+"neighborhood/add/",jsondata)
+        print(ans)
+
+#addkeywords()
+#addlinks()
+addneighborhoods()
 
 # url = 'http://localhost:3000/keywords'
 
