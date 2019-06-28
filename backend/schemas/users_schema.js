@@ -56,10 +56,53 @@ UserSchema.statics.authenticate = function(username, password, callback) {
             bcrypt.compare(password, user.password, function(err, result) {
                 if(result === true)
                     return callback(null, user);
-                else
-                    return callback();
+                else {
+                    var err = new Error('Incorrect password.');
+                    err.status = 402;
+                    err.message = 'Incorrect password.';
+                    return callback(err);
+                }
             });
         });
+}
+
+// Delete user against database
+UserSchema.statics.delete = function(userjs, callback) {
+    //var state = 0;
+    User.deleteOne({username: userjs.username})
+        .exec(function(err, user) {
+            if(err) {
+                return callback(err);
+            } else {
+                return callback(null);
+            }
+            /*else if( !user ) {
+                state = -1;
+            } else{
+                bcrypt.compare(userjs.password, user.password, function(err, result) {
+                    if (err){
+                        return callback(err);
+                    } else if(result){
+                        state = 1;
+                    }
+                    else {
+                        state = -2;
+                    }
+                });
+            }*/
+        });
+        /*if ( state == -1 ){
+            var err = new Error('User not found.');
+            err.status = 401;
+            return callback(err); 
+        } else if ( state == -2 ) {
+            var err = new Error('Incorrect password.');
+            err.status = 402;
+            return callback(err);
+        } else {
+            User.deleteOne({username: userjs.username});
+            return callback(null);
+        }*/
 }
 
 UserSchema.pre('save', function(next) {
@@ -73,11 +116,5 @@ UserSchema.pre('save', function(next) {
 });
 
 var User = mongoose.model('User', UserSchema);
-
-User.count({}, (err, size) => {
-    if (err)
-        return;
-
-});
 
 module.exports = User;

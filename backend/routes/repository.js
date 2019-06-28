@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
-var Repository = require('../schemas/repository_schema.js.js');
+var Repository = require('../schemas/repository_schema.js');
 
 // Json example of repository data comming via post
 var REPOSITORY_JSONIN = 
