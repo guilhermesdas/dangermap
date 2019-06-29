@@ -32,4 +32,14 @@ router.post("/add", urlencodedParser, (req, res) => {
 
 });
 
+// /neighborgood/delete will delete a neighborhood with given id
+router.post("/remove",urlencodedParser, (req,res) => {
+
+	var json = req.body;
+	console.log(json["_id"])
+	var v = Neighborhood.findOneAndDelete(json).exec()
+	return res.send({"status": v.error})
+
+});
+
 module.exports = router;

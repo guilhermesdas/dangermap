@@ -4,20 +4,6 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var User = require('../schemas/users_schema.js');
 
-// Json example of user data comming via post
-var USER_JSONIN_SIGNUP = 
-{
-    name: "name",
-    email: "email",
-    username: "username",
-    password: "password"
-}
-var USER_JSONIN_SIGNIN = 
-{
-    username: "username",
-    password: "password"
-}
-
 // /users/ will return all users
 router.get("/", (req, res) => {
 	console.log("listing all users.");	
@@ -34,8 +20,7 @@ router.get("/", (req, res) => {
 router.post("/signup", urlencodedParser, (req, res) => {
 
     // Take received data in json
-	var json = Object.assign({}, USER_JSONIN_SIGNUP);
-    json = req.body;
+    var json = req.body;
     
     // Try to create a user
 	var v = User.create(json)
@@ -52,8 +37,7 @@ router.post("/signup", urlencodedParser, (req, res) => {
 router.post("/signin", urlencodedParser, (req, res) => {
 
     // Take received data in json
-    var json = Object.assign({}, USER_JSONIN_SIGNIN);
-    json = req.body;
+    var json = req.body;
     
     // Authenticate user
 	User.authenticate(json.username, json.password, (err, user) => {
@@ -72,8 +56,7 @@ router.post("/signin", urlencodedParser, (req, res) => {
 router.post("/delete", urlencodedParser, (req, res) => {
 
     // Take received data in json
-    var json = Object.assign({}, USER_JSONIN_SIGNIN);
-    json = req.body;
+    var json = req.body;
     
     delete_json = {
         "username": json.username,

@@ -5,14 +5,6 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 var Repository = require('../schemas/repository_schema.js');
 var Keywords = require('../schemas/keywords_schema')
 
-// Json example of repository data comming via post
-var REPOSITORY_JSONIN = 
-{
-	links_id: 1,
-	neighborhood_id: 2,
-    foundedKeywords_ids: [1]
-}
-
 // /repository/ will return all repository
 router.get("/", (req, res) => {
 	console.log("listing all repository.");	
