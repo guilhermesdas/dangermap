@@ -66,7 +66,7 @@ def addneighborhoods():
 
 #addkeywords()
 #addlinks()
-addneighborhoods()
+#addneighborhoods()
 
 # url = 'http://localhost:3000/keywords'
 
