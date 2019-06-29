@@ -5,7 +5,8 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.http.HttpClient;
+import java.net.http.HttpClient;				
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 import org.json.simple.JSONObject;
@@ -23,11 +24,21 @@ public class Requests {
 		
 		JSONObject obj = new JSONObject();
 
-	     obj.put("keyword","123");
+	     obj.put("keyword","12312");
+	     obj.put("blacklist","false");
+	     
+	     /*ArrayList urlParameters = new ArrayList();
+	     urlParameters.ad
+	     
 		
+	     StringEntity data = new StringEntity(obj.toString());*/
+	     
 		System.out.println("\nTesting 2 - Send Http POST request");
-		http.sendPost("http://localhost:3000/keywords/add",obj.toString());
+		//http.sendPost("http://localhost:3000/keywords/add",obj.toString());
 		
+		http.sendGet("http://localhost:3000/keywords/","");
+
+
 	}
 	
 	// HTTP POST request
@@ -40,6 +51,7 @@ public class Requests {
 		con.setRequestMethod("POST");
 		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+		con.setRequestProperty("Content-Type", "application/json");
 		
 		// Send post request
 		con.setDoOutput(true);
@@ -48,10 +60,9 @@ public class Requests {
 		wr.flush();
 		wr.close();
 
-		int responseCode = con.getResponseCode();
 		System.out.println("\nSending 'POST' request to URL : " + url);
 		System.out.println("Post parameters : " + params);
-		System.out.println("Response Code : " + responseCode);
+		System.out.println("Response Code : " + con.getResponseCode());
 
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
@@ -67,22 +78,19 @@ public class Requests {
 		System.out.println(response.toString());
 
 	}
-	
-
 
 	// HTTP GET request
-	private void sendGet() throws Exception {
+	private void sendGet(String url, String params) throws Exception {
 
-		String url = "http://www.google.com/search?q=mkyong";
-		
+		// Create url connection object
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		
-		// optional default is GET
-		con.setRequestMethod("GET");
 
-		//add request header
+		// request header
+		con.setRequestMethod("GET");
 		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+		con.setRequestProperty("Content-Type", "application/json");
 
 		int responseCode = con.getResponseCode();
 		System.out.println("\nSending 'GET' request to URL : " + url);
