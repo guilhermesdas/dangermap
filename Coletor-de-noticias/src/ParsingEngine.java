@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
+import org.json.simple.parser.ParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
+import newssites.*;
 
 public class ParsingEngine {
 
@@ -29,7 +32,7 @@ public class ParsingEngine {
 
 	public static int start(String arg) throws Exception {
 		MySQLAccess basededados = new MySQLAccess();
-		if (arg == "debug") 
+		if (arg.equals("debug") )
 			debug = true; 
 		//PrintStream out = new PrintStream(new FileOutputStream("output.txt"));
 		//System.setOut(out);
@@ -74,41 +77,48 @@ public class ParsingEngine {
 						for(int j=0;j < totalLinks;j++) {
 				    		if (!robot.chkBlackList(links.get(j).text())) {
 				    			
-				    			if (links.get(j).text().split(" ").length > minimumWordsInAFrase) {
+				    			//if (links.get(j).text().split(" ").length > minimumWordsInAFrase) {
 					    			int value = num_of_keyWords(links.get(j).text()); //number of keywords occurrences
+					    			ArrayList<String> bairros = getBairros(links.get(j).text());
 					    			
-					    			Date dNow = new Date( );
-					    		    SimpleDateFormat ft = 
-					    		    new SimpleDateFormat ("yyyy/MM/dd HH:mm");
-					    		    
-					    		    url = links.get(j).attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
-					    		    text = links.get(j).text().replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
-					    		    hash = basededados.calculaMD5("0\n"+url+"\n"+text+"\n");  
-					    		    
-					    			String query = "INSERT INTO news (sourceId,url,text,value,dateCreated,hash) VALUES ("
-					    					+parts[0]+",'"	    					
-					    					+url+"','"
-					    					+text+"',"
-					    					+value+",'"
-					    					+ft.format(dNow)+"','"
-					    					+hash+"')";
+					    			System.out.println("Bairros encontrados: " + bairros);
 					    			
-					    			
-					    			//if (value > 0) if (MySQLAccess.executeUpdate(query)) { result++; partial++;}
-					    			partial++;
-					    			if (basededados.executeUpdate(query)) 
-					    				add++;
-				    		
-					    			Thread.sleep(delay);
-					    			
-					    			if (debug) 
-					    				System.out.println(k+": "+query);
-					    			else 
-					    				System.out.print(".");
-					    			
-					    			k++;
-					    			totalKeyWords = totalKeyWords+value; 
-				    			}
+					    			//if ( value > 0 && bairros.size() > 0 ) {
+
+						    			Date dNow = new Date( );
+						    		    SimpleDateFormat ft = 
+						    		    new SimpleDateFormat ("yyyy/MM/dd HH:mm");
+						    		    
+						    		    url = links.get(j).attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
+						    		    text = links.get(j).text().replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
+						    		    hash = basededados.calculaMD5("0\n"+url+"\n"+text+"\n");  
+						    		    
+						    			String query = "INSERT INTO news (sourceId,url,text,value,dateCreated,hash) VALUES ("
+						    					+parts[0]+",'"	    					
+						    					+url+"','"
+						    					+text+"',"
+						    					+value+",'"
+						    					+ft.format(dNow)+"','"
+						    					+hash+"')";
+						    			
+						    			
+						    			//if (value > 0) if (MySQLAccess.executeUpdate(query)) { result++; partial++;}
+						    			partial++;
+						    			if (basededados.executeUpdate(query)) 
+						    				add++;
+					    		
+						    			Thread.sleep(delay);
+						    			
+						    			if (debug) 
+						    				System.out.println(k+": "+query);
+						    			else 
+						    				System.out.print(".");
+						    			
+						    			k++;
+						    			totalKeyWords = totalKeyWords+value;
+					    			//}
+					    			 
+				    			//}
 				    		}
 				    	}
 					}
@@ -144,25 +154,65 @@ public class ParsingEngine {
 	}
 	
 	public static int num_of_keyWords(String text) {
+
+		System.out.println("numofkeywords text: " + text + "\n");
+		
 		int count = 0;
-		MySQLAccess basededados = new MySQLAccess();
-		String whiteList = basededados.getWhiteList();
-		String[] parts = whiteList.split("#");
+		//MySQLAccess basededados = new MySQLAccess();
+		ArrayList<String> whiteList = new ArrayList<String>();
+		try {
+			whiteList = Newssites.getKeywords();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//String[] parts = whiteList.split("#");
 		
 		System.out.println("processando keywords...");		
-		for (int i = 0;i < parts.length;i++) {
+		for ( String word : whiteList ) {
 			
-			if (text.toLowerCase().contains(parts[i].toLowerCase())) { 
-				System.out.println(parts.length);
+			if (text.toLowerCase().contains(word.toLowerCase())) { 
+				//System.out.println(parts.length);
 				count++; 
 				if (debug) 
-					System.out.println(count+" "+parts[i].toLowerCase()+" ");
+					System.out.println(count+" "+word.toLowerCase()+" ");
 			}		
 		}		
 		
 		return count;
 	}
 	
+	public static ArrayList<String> getBairros(String text) {
+
+		//System.out.println("numofkeywords text: " + text + "\n");
+		
+		int count = 0;
+		//MySQLAccess basededados = new MySQLAccess();
+		ArrayList<String> bairros = new ArrayList<String>();
+		ArrayList<String> foundedBairros = new ArrayList<String>();
+		
+		try {
+			bairros = Newssites.getNeighborhoods();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//String[] parts = whiteList.split("#");
+		
+		System.out.println("processando keywords...");		
+		for ( String word : bairros ) {
+			
+			if (text.toLowerCase().contains(word.toLowerCase())) { 
+				//System.out.println(parts.length);
+				count++; 
+				foundedBairros.add(word);
+				if (debug) 
+					System.out.println(count+" "+word.toLowerCase()+" ");
+			}		
+		}		
+		
+		return foundedBairros;
+	}
 	
 	public String getTitle(String url) throws Exception {
 	    Document document = null;

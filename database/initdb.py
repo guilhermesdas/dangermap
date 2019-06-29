@@ -64,9 +64,9 @@ def addneighborhoods():
         ans = post(baseurl+"neighborhood/add/",jsondata)
         print(ans)
 
-#addkeywords()
-#addlinks()
-#addneighborhoods()
+addkeywords()
+addlinks()
+addneighborhoods()
 
 # url = 'http://localhost:3000/keywords'
 
