@@ -1,6 +1,8 @@
 package newssites;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -11,7 +13,7 @@ public class Newssites {
 	public static void main(String [] args ) {
 		
 		try {
-			System.out.println(Newssites.addLink("url", false).toJSONString());
+			System.out.println(Newssites.getKeywords());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,7 +42,10 @@ public class Newssites {
 		try {
 			// Get response
 			String response = Requests.sendGet(url, data);
-			return (JSONArray) parser.parse(response);
+			JSONArray array = (JSONArray) parser.parse(response);
+			//ArrayList list = new ArrayList();
+			
+			return array;
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -64,9 +69,15 @@ public class Newssites {
 	///////////////// KEYWORDS ///////////////
 	
 	// Get list of all keywords
-	public static JSONArray getKeywords() throws ParseException {
+	public static ArrayList<String> getKeywords() throws ParseException {
 		
-		return get(baseurl + keywordsRoute,"");
+		JSONArray jsonarray = get(baseurl + keywordsRoute,"");
+		ArrayList list = new ArrayList();
+		for ( int i = 0; i < jsonarray.size(); i++ ) {
+			list.add(((JSONObject) jsonarray.get(i)).get("keyword") );			
+		}
+		//System.out.println(list);
+		return list;
 		
 	}
 	
@@ -85,17 +96,15 @@ public class Newssites {
 	///////////////// NEIGHBORHOODS ///////////////
 	
 	// Get list of all keywords
-	public static JSONArray getNeighborhoods() throws ParseException {
+	public static ArrayList<String> getNeighborhoods() throws ParseException {
 		
-		try {
-			// Get response
-			String response = Requests.sendGet(baseurl + neighborhoodsRoute, "");
-			return (JSONArray) parser.parse(response);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return (JSONArray) parser.parse(requestError);
+		JSONArray jsonarray = get(baseurl + neighborhoodsRoute,"");
+		ArrayList list = new ArrayList();
+		for ( int i = 0; i < jsonarray.size(); i++ ) {
+			list.add(((JSONObject) jsonarray.get(i)).get("name") );			
 		}
+		//System.out.println(list);
+		return list;
 		
 	}
 	

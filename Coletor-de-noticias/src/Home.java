@@ -1,6 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.Scanner;
 
 public class Home {
 
@@ -28,7 +28,7 @@ public class Home {
 			
 			startTime = System.currentTimeMillis();
 			
-			totalNews = robot.start("debug");			
+			totalNews = robot.start("debug");		
 			
 			estimatedTime = System.currentTimeMillis() - startTime;
 			//long estimatedRemoveDuplicatesTime = endTime - startRemoveDuplicatesTime;
