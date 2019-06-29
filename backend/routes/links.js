@@ -30,4 +30,14 @@ router.post("/add", urlencodedParser, (req, res) => {
 
 });
 
+// /links/delete will delete a link with given id
+router.post("/remove",urlencodedParser, (req,res) => {
+
+	var json = req.body;
+	console.log(json["_id"])
+	var v = Links.findOneAndDelete(json).exec()
+	return res.send({"status": v.error})
+
+});
+
 module.exports = router;

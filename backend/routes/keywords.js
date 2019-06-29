@@ -4,13 +4,6 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var Keywords = require('../schemas/keywords_schema.js');
 
-// Json example of keywords data comming via post
-var KEYWORDS_JSONIN = 
-{
-	keyword: "das",
-	blacklist: false
-}
-
 // /keywords/ will return all keywords
 router.get("/", (req, res) => {
 	console.log("listing all keywords.");	
@@ -35,6 +28,16 @@ router.post("/add", urlencodedParser, (req, res) => {
 		console.log("new keyword added:\n", json);
 		return res.send({status: true})
 	}
+
+});
+
+// /keywords/delete will delete a keyword with given id
+router.post("/remove",urlencodedParser, (req,res) => {
+
+	var json = req.body;
+	console.log(json["_id"])
+	var v = Keywords.findOneAndDelete(json).exec()
+	return res.send({"status": v.error})
 
 });
 
