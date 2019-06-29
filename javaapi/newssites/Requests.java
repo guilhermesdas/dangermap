@@ -2,18 +2,16 @@ package newssites;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.http.HttpClient;				
-import java.util.ArrayList;
-
-import javax.net.ssl.HttpsURLConnection;
 import org.json.simple.JSONObject;
 
 public class Requests {
 
-	private final String USER_AGENT = "Mozilla/5.0";
+	private static final String USER_AGENT = "Mozilla/5.0";
 
 	public static void main(String[] args) throws Exception {
 
@@ -33,7 +31,7 @@ public class Requests {
 		
 	     StringEntity data = new StringEntity(obj.toString());*/
 	     
-		System.out.println("\nTesting 2 - Send Http POST request");
+		//System.out.println("\nTesting 2 - Send Http POST request");
 		//http.sendPost("http://localhost:3000/keywords/add",obj.toString());
 		
 		http.sendGet("http://localhost:3000/keywords/","");
@@ -42,7 +40,7 @@ public class Requests {
 	}
 	
 	// HTTP POST request
-	private void sendPost(String url, String params) throws Exception {
+	public static String sendPost(String url, String params) throws IOException {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -75,12 +73,13 @@ public class Requests {
 		in.close();
 		
 		//print result
-		System.out.println(response.toString());
-
+		//System.out.println(response.toString());
+		return response.toString();
+		
 	}
 
 	// HTTP GET request
-	private void sendGet(String url, String params) throws Exception {
+	public static String sendGet(String url, String params) throws IOException {
 
 		// Create url connection object
 		URL obj = new URL(url);
@@ -93,8 +92,8 @@ public class Requests {
 		con.setRequestProperty("Content-Type", "application/json");
 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
+		//System.out.println("\nSending 'GET' request to URL : " + url);
+		//System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
@@ -105,10 +104,12 @@ public class Requests {
 			response.append(inputLine);
 		}
 		in.close();
+		
 
 		//print result
-		System.out.println(response.toString());
-
+		//System.out.println(response.toString());
+		return response.toString();
+		
 	}
 
 }
