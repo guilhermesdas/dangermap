@@ -1,7 +1,0 @@
-{
-  "name": "coordinates",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
