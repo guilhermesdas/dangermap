@@ -13,7 +13,7 @@ public class Newssites {
 	public static void main(String [] args ) {
 		
 		try {
-			System.out.println(Newssites.getKeywords());
+			System.out.println(Newssites.getRepository());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +37,7 @@ public class Newssites {
 	
 	//// GENERIC GET AND POST
 	
-	protected static JSONArray get(String url, String data) throws ParseException {
+	private static JSONArray get(String url, String data) throws ParseException {
 		
 		try {
 			// Get response
@@ -53,7 +53,7 @@ public class Newssites {
 		}
 	}
 	
-	protected static JSONObject post( String url, String data ) throws ParseException {
+	private static JSONObject post( String url, String data ) throws ParseException {
 		
 		try {
 			String response = Requests.sendPost(url, data);
@@ -82,14 +82,14 @@ public class Newssites {
 	}
 	
 	// Add a new keyword
-	public static JSONObject addKeyword( String keyword, boolean blacklist ) throws ParseException {
+	public static String addKeyword( String keyword, boolean blacklist ) throws ParseException {
 			
 		JSONObject json = new JSONObject();
 		json.put("keyword",keyword);
 		json.put("blacklist",blacklist);
 		
 		return post(
-				baseurl + keywordsRoute + addRoute, json.toString());
+				baseurl + keywordsRoute + addRoute, json.toString()).toString();
 	
 	}	
 	
@@ -168,17 +168,30 @@ public class Newssites {
 	///////////////// REPOSITORY ///////////////
 	
 	// Get list of all links
-	public static JSONArray getRepository() throws ParseException {
+	public static ArrayList<Repository> getRepository() throws ParseException {
 		
-		try {
-			// Get response
-			String response = Requests.sendGet(baseurl + repositoryRoute, "");
-			return (JSONArray) parser.parse(response);
+		JSONArray jsonarray = get(baseurl + repositoryRoute,"");
+		ArrayList<Repository> list = new ArrayList<Repository>();
+		for ( int i = 0; i < jsonarray.size(); i++ ) {
+			JSONObject repjson = ((JSONObject) jsonarray.get(i));
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return (JSONArray) parser.parse(requestError);
+			ArrayList<String> keywords = new ArrayList<String>();
+			
+			JSONArray keywordsjson = (JSONArray) repjson.get("keywords");
+			for ( int j = 0; j < keywordsjson.size(); j++ ) {
+				keywords.add(
+						((JSONObject) keywordsjson.get(j)).get("keyword").toString()
+						);
+			}
+			
+			Repository rep = new Repository(
+					(String) ((JSONObject) repjson.get("link")).get("link"),
+					(String) ((JSONObject) repjson.get("neighborhood")).get("name"),
+					keywords );
+			list.add(rep);			
 		}
+		//System.out.println(list);
+		return list;
 		
 	}
 	
