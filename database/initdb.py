@@ -1,72 +1,19 @@
-import requests
-import json
+from newscollector import *
 
-# base url
-baseurl = "http://localhost:3000/"
+# OBS::
+# IF YOU WANT TO REMOVE DROP PREVIOUS DATABASE, RUN IN SHELL
+#             mongo
+# in mongo shell:
+#             use newscollector
+#             db.dropDatabase()
+# database is now dropped.
+# you can check running getkeywords()
 
-# get all lines of a file as a list
-def getlines(filename):
-    with open(filename,'r') as file:
-        lines = [line.rstrip('\n') for line in file]
-    return lines
-
-# post some json data in url
-def post(url,jsondata):
-    resp = requests.post(url,data=jsondata)
-    return resp.json()
-
-# get some json data in url
-def get(url,jsondata):
-    resp = requests.get(url,data=jsondata)
-    return resp.json()
-
-# add keywords
-def addkeywords():
-    # get list of keywords from file
-    keywords = getlines("keywords")
-
-    for keyword in keywords:
-        # create json for given keyword
-        jsondata = {
-            "keyword": keyword,
-            "blacklist": "false"
-        }
-        # make post to add in database
-        ans = post(baseurl+"keywords/add/",jsondata)
-        print(ans)
-
-# add links
-def addlinks():
-    # get list of links from file
-    links = getlines("seeds")
-
-    for link in links:
-        # create json for given keyword
-        jsondata = {
-            "link": link,
-            "isBaseURL": "true"
-        }
-        # make post to add in database
-        ans = post(baseurl+"links/add/",jsondata)
-        print(ans)
-
-# add neighborhoods
-def addneighborhoods():
-    # get list of links from file
-    neighborhood = getlines("neighborhood")
-
-    for bairro in neighborhood:
-        # create json for given keyword
-        jsondata = {
-            "name": bairro
-        }
-        # make post to add in database
-        ans = post(baseurl+"neighborhood/add/",jsondata)
-        print(ans)
-
-addkeywords()
-addlinks()
-addneighborhoods()
+#addkeywords()
+#ddlinks()
+#addneighborhoods()
+initrepository()
+print(getrepository())
 
 # url = 'http://localhost:3000/keywords'
 
