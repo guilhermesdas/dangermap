@@ -5,7 +5,7 @@ var app = express();
 var port = 3000;
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
-var database = "mongodb://localhost:27017/test";
+var database = "mongodb://localhost:27017/newscollector";
 var mongoose = require("mongoose");
 
 // Get Routes

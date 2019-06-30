@@ -16,8 +16,9 @@ router.get("/", (req, res) => {
 	// 	}		
 	// }).populate("foundedKeywords_ids.foundedKeywords_id")
 	Repository.find()
-	.populate("neighborhood_id")
-	.populate("foundedKeywords_ids")
+	.populate("neighborhood")
+	.populate("link")
+	.populate("keywords")
 	.then(repo => res.json(repo));
 });
 
