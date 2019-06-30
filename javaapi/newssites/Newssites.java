@@ -12,8 +12,16 @@ public class Newssites {
 	
 	public static void main(String [] args ) {
 		
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("5d19060725c38d0f77d325a2");
+		keywords.add("5d19060725c38d0f77d325ad");
+		
 		try {
-			System.out.println(Newssites.getRepository());
+			//System.out.println(Newssites.addRepository(
+			//		"5d1905d725c38d0f77d3255c",
+			//		"5d1905d725c38d0f77d32565",
+			//		keywords ));
+			System.out.println(Newssites.getNeighborhoods());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -22,7 +30,7 @@ public class Newssites {
 	}
 	
 	// Routes to server
-	static final String baseurl = "http://localhost:3000/";
+	static String baseurl = "http://localhost:3000/";
 	static final String keywordsRoute = "keywords/";
 	static final String repositoryRoute = "repository/";
 	static final String usersRoute = "users/";
@@ -99,9 +107,9 @@ public class Newssites {
 	public static ArrayList<String> getNeighborhoods() throws ParseException {
 		
 		JSONArray jsonarray = get(baseurl + neighborhoodsRoute,"");
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add(((JSONObject) jsonarray.get(i)).get("name") );			
+			list.add( ((JSONObject) jsonarray.get(i)).get("name").toString() );			
 		}
 		//System.out.println(list);
 		return list;
@@ -197,7 +205,29 @@ public class Newssites {
 	
 	// Add a new keyword
 	@SuppressWarnings("unchecked")
-	public static JSONObject addRepository( String link_id, String neighborhood_id, String keywords_id ) throws ParseException {
+	public static JSONObject addRepository( String link_id, String neighborhood_id, ArrayList<String> keywords_id ) throws ParseException {
+		
+		try {
+			
+			JSONObject json = new JSONObject();
+			json.put("link",link_id);
+			json.put("neighborhood", neighborhood_id);
+			json.put("keywords", keywords_id);
+			
+			String response = Requests.sendPost(
+					baseurl + repositoryRoute + addRoute, json.toString());
+			return (JSONObject) parser.parse(response);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return (JSONObject) parser.parse(requestError);
+		}
+		
+	}
+	
+	// Add a new keyword
+	@SuppressWarnings("unchecked")
+	public static JSONObject signup( String link_id, String neighborhood_id, String keywords_id ) throws ParseException {
 		
 		try {
 			
