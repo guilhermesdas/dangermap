@@ -16,6 +16,18 @@ router.get("/", (req, res) => {
 	})
 });
 
+// /links/ will return all links
+router.get("/seeds", (req, res) => {
+	console.log("listing all seeds.");	
+	Links.find({"isBaseURL": true}, (err,links) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send(links);
+		}		
+	})
+});
+
 // /links/add will add a new link
 router.post("/add", urlencodedParser, (req, res) => {
 

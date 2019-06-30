@@ -21,7 +21,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(Newssites.getNeighborhoods());
+			System.out.println(Newssites.getSeeds());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,17 +89,18 @@ public class Newssites {
 		
 	}
 	
-	// Add a new keyword
-	public static String addKeyword( String keyword, boolean blacklist ) throws ParseException {
-			
-		JSONObject json = new JSONObject();
-		json.put("keyword",keyword);
-		json.put("blacklist",blacklist);
+	// Get list of all keywords
+	public static ArrayList<String> getBlackList() throws ParseException {
 		
-		return post(
-				baseurl + keywordsRoute + addRoute, json.toString()).toString();
-	
-	}	
+		JSONArray jsonarray = get(baseurl + keywordsRoute + "blacklist","");
+		ArrayList list = new ArrayList();
+		for ( int i = 0; i < jsonarray.size(); i++ ) {
+			list.add(((JSONObject) jsonarray.get(i)).get("keyword") );			
+		}
+		//System.out.println(list);
+		return list;
+		
+	}
 	
 	///////////////// NEIGHBORHOODS ///////////////
 	
@@ -138,17 +139,28 @@ public class Newssites {
 	///////////////// LINKS ///////////////
 	
 	// Get list of all links
-	public static JSONArray getLinks() throws ParseException {
+	public static ArrayList<String> getLinks() throws ParseException {
 		
-		try {
-			// Get response
-			String response = Requests.sendGet(baseurl + linksRoute, "");
-			return (JSONArray) parser.parse(response);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return (JSONArray) parser.parse(requestError);
+		JSONArray jsonarray = get(baseurl + linksRoute,"");
+		ArrayList<String> list = new ArrayList<String>();
+		for ( int i = 0; i < jsonarray.size(); i++ ) {
+			list.add( ((JSONObject) jsonarray.get(i)).get("link").toString() );			
 		}
+		//System.out.println(list);
+		return list;
+		
+	}
+	
+	// Get list of all links
+	public static ArrayList<String> getSeeds() throws ParseException {
+		
+		JSONArray jsonarray = get(baseurl + linksRoute + "seeds","");
+		ArrayList<String> list = new ArrayList<String>();
+		for ( int i = 0; i < jsonarray.size(); i++ ) {
+			list.add( ((JSONObject) jsonarray.get(i)).get("link").toString() );			
+		}
+		//System.out.println(list);
+		return list;
 		
 	}
 	
