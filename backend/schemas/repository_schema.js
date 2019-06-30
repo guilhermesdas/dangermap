@@ -3,7 +3,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 var RepositorySchema = new mongoose.Schema({
 
-    links : {
+    link : {
         type: ObjectId,
         required: true,
         ref:'Links'
@@ -11,7 +11,7 @@ var RepositorySchema = new mongoose.Schema({
     neighborhood: {
         type: ObjectId,
         required: true,
-        ref:'Neightborhood'
+        ref:'Neighborhood'
     },
     keywords: [
         {
