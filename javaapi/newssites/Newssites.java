@@ -21,7 +21,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(Newssites.getNeighborhoods());
+			System.out.println(Newssites.getRepository());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,42 +77,25 @@ public class Newssites {
 	///////////////// KEYWORDS ///////////////
 	
 	// Get list of all keywords
-	public static ArrayList<String> getKeywords() throws ParseException {
+	public static ArrayList<Keyword> getKeywords() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + keywordsRoute,"");
-		ArrayList list = new ArrayList();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add(((JSONObject) jsonarray.get(i)).get("keyword") );			
-		}
-		//System.out.println(list);
-		return list;
+		return Keyword.toKeywords(get(baseurl + keywordsRoute,""));
 		
 	}
 	
-	// Add a new keyword
-	public static String addKeyword( String keyword, boolean blacklist ) throws ParseException {
-			
-		JSONObject json = new JSONObject();
-		json.put("keyword",keyword);
-		json.put("blacklist",blacklist);
+	// Get list of all keywords
+	public static ArrayList<Keyword> getBlackList() throws ParseException {
 		
-		return post(
-				baseurl + keywordsRoute + addRoute, json.toString()).toString();
-	
-	}	
+		return Keyword.toKeywords(get(baseurl + keywordsRoute + "blacklist",""));
+		
+	}
 	
 	///////////////// NEIGHBORHOODS ///////////////
 	
 	// Get list of all keywords
-	public static ArrayList<String> getNeighborhoods() throws ParseException {
+	public static ArrayList<Neighborhood> getNeighborhoods() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + neighborhoodsRoute,"");
-		ArrayList<String> list = new ArrayList<String>();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add( ((JSONObject) jsonarray.get(i)).get("name").toString() );			
-		}
-		//System.out.println(list);
-		return list;
+		return Neighborhood.toNeighborhoods(get(baseurl + neighborhoodsRoute,""));
 		
 	}
 	
@@ -138,17 +121,15 @@ public class Newssites {
 	///////////////// LINKS ///////////////
 	
 	// Get list of all links
-	public static JSONArray getLinks() throws ParseException {
+	public static ArrayList<Link> getLinks() throws ParseException {
 		
-		try {
-			// Get response
-			String response = Requests.sendGet(baseurl + linksRoute, "");
-			return (JSONArray) parser.parse(response);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return (JSONArray) parser.parse(requestError);
-		}
+		return Link.toLinks(get(baseurl + linksRoute,""));
+		
+	}
+
+	public static ArrayList<Link> getSeeds() throws ParseException {
+		
+		return Link.toLinks(get(baseurl + linksRoute + "seeds/",""));
 		
 	}
 	
@@ -177,40 +158,19 @@ public class Newssites {
 	
 	// Get list of all links
 	public static ArrayList<Repository> getRepository() throws ParseException {
-		
-		JSONArray jsonarray = get(baseurl + repositoryRoute,"");
-		ArrayList<Repository> list = new ArrayList<Repository>();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			JSONObject repjson = ((JSONObject) jsonarray.get(i));
-			
-			ArrayList<String> keywords = new ArrayList<String>();
-			
-			JSONArray keywordsjson = (JSONArray) repjson.get("keywords");
-			for ( int j = 0; j < keywordsjson.size(); j++ ) {
-				keywords.add(
-						((JSONObject) keywordsjson.get(j)).get("keyword").toString()
-						);
-			}
-			
-			Repository rep = new Repository(
-					(String) ((JSONObject) repjson.get("link")).get("link"),
-					(String) ((JSONObject) repjson.get("neighborhood")).get("name"),
-					keywords );
-			list.add(rep);			
-		}
-		//System.out.println(list);
-		return list;
+
+		return Repository.toRepositories(get(baseurl + repositoryRoute,""));
 		
 	}
 	
 	// Add a new keyword
 	@SuppressWarnings("unchecked")
-	public static JSONObject addRepository( String link_id, String neighborhood_id, ArrayList<String> keywords_id ) throws ParseException {
+	public static JSONObject addRepository( String link, String neighborhood_id, ArrayList<String> keywords_id ) throws ParseException {
 		
 		try {
 			
 			JSONObject json = new JSONObject();
-			json.put("link",link_id);
+			json.put("link",link);
 			json.put("neighborhood", neighborhood_id);
 			json.put("keywords", keywords_id);
 			

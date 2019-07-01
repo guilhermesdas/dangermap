@@ -7,7 +7,19 @@ var Keywords = require('../schemas/keywords_schema.js');
 // /keywords/ will return all keywords
 router.get("/", (req, res) => {
 	console.log("listing all keywords.");	
-	Keywords.find({}, (err,keywords) => {
+	Keywords.find({"blacklist": false}, (err,keywords) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send(keywords);
+		}		
+	})
+});
+
+// /keywords/ will return all keywords
+router.get("/blacklist", (req, res) => {
+	console.log("listing all blacklist keywords.");	
+	Keywords.find({"blacklist": true}, (err,keywords) => {
 		if (err) {
 			res.send(err);
 		} else {
