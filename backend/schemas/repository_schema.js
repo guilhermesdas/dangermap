@@ -4,18 +4,19 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 var RepositorySchema = new mongoose.Schema({
 
     link : {
-        type: String,
+        type: ObjectId,
         required: true,
-        unique: true
+        unique: true,
+        ref:'Links'
     },
     neighborhood: {
-        type: String,
+        type: ObjectId,
         required: true,
         ref:'Neighborhood'
     },
     keywords: [
         {
-        type: String,
+        type: ObjectId,
         ref: 'Keywords'
         }
     ] 

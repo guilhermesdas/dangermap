@@ -6,6 +6,14 @@ var NeighborhoodSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    lat: {
+        type: String,
+        required: false
+    },
+    lng: {
+        type: String,
+        required: false
     }
 
 });
