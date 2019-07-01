@@ -197,7 +197,7 @@ public class ParsingEngine {
 
 	// get founded bairros in a text
 	public static Set<Neighborhood> searchBairros(String text) {
-		
+				
 		Set<Neighborhood> foundedBairros = new HashSet<Neighborhood>();
 		
 		for ( Neighborhood word : bairros ) {

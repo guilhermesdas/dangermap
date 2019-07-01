@@ -58,9 +58,9 @@ public class Requests {
 		wr.flush();
 		wr.close();
 
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + params);
-		System.out.println("Response Code : " + con.getResponseCode());
+		//System.out.println("\nSending 'POST' request to URL : " + url);
+		//System.out.println("Post parameters : " + params);
+		//System.out.println("Response Code : " + con.getResponseCode());
 
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
