@@ -2,9 +2,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
+import java.util.HashSet;
 
 // JSON
 import org.json.simple.parser.ParseException;
@@ -105,8 +106,8 @@ public class ParsingEngine {
 
 	    			//System.out.println(link.text());
 	    			//if (link.text().split(" ").length > minimumWordsInAFrase) {
-		    			ArrayList<String> foundedKeywords = searchKeywords(link.text()); //number of keywords occurrences
-		    			ArrayList<String> foundedBairros = searchBairros(link.text()); //number of keywords occurrences
+		    			Set<String> foundedKeywords = searchKeywords(link.text()); //number of keywords occurrences
+		    			Set<String> foundedBairros = searchBairros(link.text()); //number of keywords occurrences
 		    			
 		    			//if ( !foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
 			    			Date dNow = new Date( );
@@ -145,9 +146,9 @@ public class ParsingEngine {
 	}
 
 	// get founded bairros in a text
-	public static ArrayList<String> searchBairros(String text) {
+	public static Set<String> searchBairros(String text) {
 		
-		ArrayList<String> foundedBairros = new ArrayList<String>();
+		Set<String> foundedBairros = new HashSet<String>();
 		
 		for ( String word : bairros ) {
 			
@@ -161,9 +162,9 @@ public class ParsingEngine {
 	}
 
 	// get founded keywords in a text
-	public static ArrayList<String> searchKeywords(String text) {
-		
-		ArrayList<String> foundedWords = new ArrayList<String>();
+	public static Set<String> searchKeywords(String text) {
+
+		Set<String> foundedWords = new HashSet<String>();
 			
 		for ( String word : whiteList ) {
 			

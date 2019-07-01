@@ -21,7 +21,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(Newssites.getSeeds());
+			System.out.println(Newssites.getRepository());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,43 +77,25 @@ public class Newssites {
 	///////////////// KEYWORDS ///////////////
 	
 	// Get list of all keywords
-	public static ArrayList<String> getKeywords() throws ParseException {
+	public static ArrayList<Keyword> getKeywords() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + keywordsRoute,"");
-		ArrayList list = new ArrayList();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add(((JSONObject) jsonarray.get(i)).get("keyword") );			
-		}
-		//System.out.println(list);
-		return list;
+		return Keyword.toKeywords(get(baseurl + keywordsRoute,""));
 		
 	}
 	
 	// Get list of all keywords
-	public static ArrayList<String> getBlackList() throws ParseException {
+	public static ArrayList<Keyword> getBlackList() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + keywordsRoute + "blacklist","");
-		ArrayList list = new ArrayList();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add(((JSONObject) jsonarray.get(i)).get("keyword") );			
-		}
-		//System.out.println(list);
-		return list;
+		return Keyword.toKeywords(get(baseurl + keywordsRoute + "blacklist",""));
 		
 	}
 	
 	///////////////// NEIGHBORHOODS ///////////////
 	
 	// Get list of all keywords
-	public static ArrayList<String> getNeighborhoods() throws ParseException {
+	public static ArrayList<Neighborhood> getNeighborhoods() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + neighborhoodsRoute,"");
-		ArrayList<String> list = new ArrayList<String>();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add( ((JSONObject) jsonarray.get(i)).get("name").toString() );			
-		}
-		//System.out.println(list);
-		return list;
+		return Neighborhood.toNeighborhoods(get(baseurl + neighborhoodsRoute,""));
 		
 	}
 	
@@ -139,28 +121,15 @@ public class Newssites {
 	///////////////// LINKS ///////////////
 	
 	// Get list of all links
-	public static ArrayList<String> getLinks() throws ParseException {
+	public static ArrayList<Link> getLinks() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + linksRoute,"");
-		ArrayList<String> list = new ArrayList<String>();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add( ((JSONObject) jsonarray.get(i)).get("link").toString() );			
-		}
-		//System.out.println(list);
-		return list;
+		return Link.toLinks(get(baseurl + linksRoute,""));
 		
 	}
-	
-	// Get list of all links
-	public static ArrayList<String> getSeeds() throws ParseException {
+
+	public static ArrayList<Link> getSeeds() throws ParseException {
 		
-		JSONArray jsonarray = get(baseurl + linksRoute + "seeds","");
-		ArrayList<String> list = new ArrayList<String>();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			list.add( ((JSONObject) jsonarray.get(i)).get("link").toString() );			
-		}
-		//System.out.println(list);
-		return list;
+		return Link.toLinks(get(baseurl + linksRoute + "seeds/",""));
 		
 	}
 	
@@ -189,29 +158,8 @@ public class Newssites {
 	
 	// Get list of all links
 	public static ArrayList<Repository> getRepository() throws ParseException {
-		
-		JSONArray jsonarray = get(baseurl + repositoryRoute,"");
-		ArrayList<Repository> list = new ArrayList<Repository>();
-		for ( int i = 0; i < jsonarray.size(); i++ ) {
-			JSONObject repjson = ((JSONObject) jsonarray.get(i));
-			
-			ArrayList<String> keywords = new ArrayList<String>();
-			
-			JSONArray keywordsjson = (JSONArray) repjson.get("keywords");
-			for ( int j = 0; j < keywordsjson.size(); j++ ) {
-				keywords.add(
-						((JSONObject) keywordsjson.get(j)).get("keyword").toString()
-						);
-			}
-			
-			Repository rep = new Repository(
-					(String) ((JSONObject) repjson.get("link")).get("link"),
-					(String) ((JSONObject) repjson.get("neighborhood")).get("name"),
-					keywords );
-			list.add(rep);			
-		}
-		//System.out.println(list);
-		return list;
+
+		return Repository.toRepositories(get(baseurl + repositoryRoute,""));
 		
 	}
 	
