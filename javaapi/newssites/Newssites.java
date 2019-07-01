@@ -165,12 +165,12 @@ public class Newssites {
 	
 	// Add a new keyword
 	@SuppressWarnings("unchecked")
-	public static JSONObject addRepository( String link_id, String neighborhood_id, ArrayList<String> keywords_id ) throws ParseException {
+	public static JSONObject addRepository( String link, String neighborhood_id, ArrayList<String> keywords_id ) throws ParseException {
 		
 		try {
 			
 			JSONObject json = new JSONObject();
-			json.put("link",link_id);
+			json.put("link",link);
 			json.put("neighborhood", neighborhood_id);
 			json.put("keywords", keywords_id);
 			

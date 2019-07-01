@@ -7,14 +7,14 @@ import org.json.simple.JSONObject;
 
 public class Repository {
 	
-	private Link link;
+	private String link;
 	private Neighborhood neighborhood;
 	private ArrayList<Keyword> keywords;
 	private String _id;
 	
 	
 	
-	public Repository(Link link, Neighborhood neighborhood, ArrayList<Keyword> keywords) {
+	public Repository(String link, Neighborhood neighborhood, ArrayList<Keyword> keywords) {
 		super();
 		this.link = link;
 		this.neighborhood = neighborhood;
@@ -23,7 +23,7 @@ public class Repository {
 
 
 
-	public Repository(Link link, Neighborhood neighborhood, ArrayList<Keyword> keywords, String _id) {
+	public Repository(String link, Neighborhood neighborhood, ArrayList<Keyword> keywords, String _id) {
 		super();
 		this.link = link;
 		this.neighborhood = neighborhood;
@@ -33,13 +33,13 @@ public class Repository {
 
 
 
-	public Link getLink() {
+	public String getLink() {
 		return link;
 	}
 
 
 
-	public void setLink(Link link) {
+	public void setLink(String link) {
 		this.link = link;
 	}
 
@@ -85,7 +85,7 @@ public class Repository {
 	public static Repository toRepository( JSONObject json ) {
 		
 		return new Repository ( 
-				Link.toLink( (JSONObject) json.get("link") ),
+				Link.toLink( (JSONObject) json.get("link") ).getLink(),
 				Neighborhood.toNeighborhood((JSONObject) json.get("neighborhood")),
 				Keyword.toKeywords( (JSONArray) json.get("keywords") )
 				);
