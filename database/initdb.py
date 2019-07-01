@@ -10,10 +10,12 @@ from newscollector import *
 # you can check running getkeywords()
 
 addkeywords()
+addblacklist()
 addlinks()
 addneighborhoods()
-#initrepository()
-#print(getrepository())
+
+initrepository()
+print(getrepository())
 
 # url = 'http://localhost:3000/keywords'
 

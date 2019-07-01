@@ -44,6 +44,20 @@ def getkeywords():
     # https get in server
     return get(baseurl+"keywords/",{})
 
+# add keywords
+def addblacklist():
+    # get list of keywords from file
+    keywords = getlines("blacklist")
+
+    for keyword in keywords:
+        # create json for given keyword
+        jsondata = {
+            "keyword": keyword,
+            "blacklist": "true"
+        }
+        # make post to add in database
+        ans = post(baseurl+"keywords/add/",jsondata)
+        print(ans)
 #################### LINKS ####################
 
 # add links
@@ -71,13 +85,12 @@ def getlinks():
 # add neighborhoods
 def addneighborhoods():
     # get list of links from file
-    neighborhood = getlines("neighborhood")
+    neighborhood = getlines("bairro_latlng")
 
     for bairro in neighborhood:
         # create json for given keyword
-        jsondata = {
-            "name": bairro
-        }
+        jsondata = json.loads(bairro)
+
         # make post to add in database
         ans = post(baseurl+"neighborhood/add/",jsondata)
         print(ans)

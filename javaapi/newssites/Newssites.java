@@ -16,12 +16,15 @@ public class Newssites {
 		keywords.add("5d19060725c38d0f77d325a2");
 		keywords.add("5d19060725c38d0f77d325ad");
 		
+		Newssites.setIP("192.168.1.104");
+		System.out.println(baseurl);
+		
 		try {
 			//System.out.println(Newssites.addRepository(
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(Newssites.getRepository());
+			System.out.println(Newssites.getBlackList());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,6 +45,10 @@ public class Newssites {
 	static final String errorparse = "[{\"message\": \"Erro in parsing json\"}]";
 	static final JSONParser parser = new JSONParser();
 	static final JSONArray error = new JSONArray();
+	
+	public static void setIP(String IP) {
+		baseurl = "http://" + IP + ":3000/";
+	}
 	
 	//// GENERIC GET AND POST
 	
