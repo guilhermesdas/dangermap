@@ -12,7 +12,7 @@ from newscollector import *
 addkeywords()
 addlinks()
 addneighborhoods()
-initrepository()
+#initrepository()
 #print(getrepository())
 
 # url = 'http://localhost:3000/keywords'

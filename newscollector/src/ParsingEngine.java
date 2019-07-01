@@ -20,6 +20,7 @@ import newssites.Link;
 import newssites.Neighborhood;
 // Newssites
 import newssites.Newssites;
+
 public class ParsingEngine {
 	
 	public static void main(String args[]) {
@@ -150,18 +151,6 @@ public class ParsingEngine {
 			    		    new SimpleDateFormat ("yyyy/MM/dd HH:mm");	
 			    		    //hash = basededados.calculaMD5("0\n"+url+"\n"+text+"\n");  
 			    			partial++;
-
-			    		    url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
-			    		    text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]"," ");			    			
-		    				
-			    		    if (debug) {
-			    				System.out.printf("url: %s\ntext: %s\n", url, text );
-				    		    System.out.println(foundedKeywords);
-				    		    System.out.println(foundedBairros);
-				    		    //Newssites.add
-			    			}
-			    			else 
-			    				System.out.print(".");
 			    			
 			    			Thread.sleep(delay);			    			
 			    			totalKeyWords = totalKeyWords+foundedKeywords.size();
@@ -169,6 +158,18 @@ public class ParsingEngine {
 			    			//new Scanner(System.in).next();
 			    			
 			    			if ( !foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
+
+				    		    url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
+				    		    text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]"," ");			    			
+			    				
+				    		    if (debug) {
+				    				System.out.printf("url: %s\ntext: %s\n", url, text );
+					    		    System.out.println(foundedKeywords);
+					    		    System.out.println(foundedBairros);
+					    		    //Newssites.add
+				    			}
+				    			else 
+				    				System.out.print(".");
 				    		    
 			    				ArrayList<String> keywords_id = new ArrayList<String>();
 			    				for ( Iterator<Keyword> it = foundedKeywords.iterator(); it.hasNext(); ) {

@@ -6,8 +6,7 @@ var RepositorySchema = new mongoose.Schema({
     link : {
         type: String,
         required: true,
-        unique: true,
-        ref:'Links'
+        unique: true
     },
     neighborhood: {
         type: String,
