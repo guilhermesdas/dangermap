@@ -8,6 +8,5 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/run/media/guilherme/2D4B3415324E94B7/guilherme/Google Drive/Projetos/eyesofthundera/lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/run/media/guilherme/2D4B3415324E94B7/guilherme/Google Drive/Projetos/eyesofthundera/lib/jsoup-1.9.2.jar"/>
-	<classpathentry kind="lib" path="/run/media/guilherme/2D4B3415324E94B7/guilherme/Google Drive/Projetos/eyesofthundera/lib/newssites.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

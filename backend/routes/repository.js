@@ -24,6 +24,24 @@ router.get("/", (req, res) => {
 	.then(repo => res.json(repo));
 });
 
+// 
+router.get("/newsbairro", (req, res) => {
+	console.log("listing all repository.");	
+	// Repository.find({}, (err,repository) => {
+	// 	if (err) {
+	// 		res.send(err);
+	// 	} else {
+	// 		res.send(repository);
+	// 	}		
+	// }).populate("foundedKeywords_ids.foundedKeywords_id")
+
+	Repository.find({ neighborhood : req.body.neighborhoodid })
+	.populate("neighborhood")
+	.populate("link")
+	.populate("keywords")
+	.then(repo => res.json(repo));
+});
+
 // /repository/add will add a repository
 router.post("/add2", urlencodedParser, (req, res) => {
 

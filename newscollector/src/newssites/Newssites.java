@@ -25,9 +25,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
 			
-			System.out.println( Newssites.addLink("doente de amor procurei remdio nadvida noturnaxcsd", false) );
-			//System.out.println( Newssites.getLink("cv") );
-			
+			System.out.println(getRepository());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -164,27 +162,6 @@ public class Newssites {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return (JSONObject) parser.parse(requestError);
-		}
-		
-	}
-	
-	// Add a new keyword
-	@SuppressWarnings("unchecked")
-	public static Link getLink( String link ) throws ParseException {
-		
-		try {
-			
-			JSONObject json = new JSONObject();
-			json.put("link",link);
-			
-			
-			String response = Requests.sendGet(
-					baseurl + linksRoute + "get/", json.toString());
-			return Link.toLink((JSONObject) parser.parse(response));
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return null;
 		}
 		
 	}

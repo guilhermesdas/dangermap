@@ -9,10 +9,10 @@ from newscollector import *
 # database is now dropped.
 # you can check running getkeywords()
 
-addkeywords()
-addblacklist()
+#addkeywords()
+#addblacklist()
 #addlinks()
-addneighborhoods()
+#addneighborhoods()
 
 initrepository()
 print(getrepository())
