@@ -24,7 +24,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(Newssites.getBlackList());
+			System.out.println(Newssites.getRepository());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

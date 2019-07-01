@@ -9,6 +9,30 @@ public class Neighborhood {
 
 	private String name;
 	private String _id;
+	private String lat;
+	private String lng;
+	
+	
+	
+	public Neighborhood(String name, String _id, String lat, String lng) {
+		super();
+		this.name = name;
+		this._id = _id;
+		this.lat = lat;
+		this.lng = lng;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+	public String getLng() {
+		return lng;
+	}
+	public void setLng(String lng) {
+		this.lng = lng;
+	}
 	public String getName() {
 		return name;
 	}
@@ -26,7 +50,9 @@ public class Neighborhood {
 		
 		return new Neighborhood ( 
 				(json.get("name")).toString(),
-				(json.get("_id")).toString()
+				(json.get("_id")).toString(),
+				(json.get("lat")).toString(),
+				(json.get("lng")).toString()
 				);
 	}
 	

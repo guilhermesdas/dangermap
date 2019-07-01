@@ -34,10 +34,15 @@ router.post("/add", urlencodedParser, (req, res) => {
 	var json = req.body;
 	var v = Links.create(json)
 	if (v == null || v == undefined)
-		return res.send({ status: false });
+		res.send({ status: false });
 	else{
-		console.log("new link added:\n", json);
-		return res.send({status: true})
+		Links.findOne(json, (err,links) => {
+			if (err) {
+				res.send(err);
+			} else {
+				res.send(links);
+			}		
+		})
 	}
 
 });

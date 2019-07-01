@@ -11,7 +11,7 @@ from newscollector import *
 
 addkeywords()
 addblacklist()
-addlinks()
+#addlinks()
 addneighborhoods()
 
 initrepository()

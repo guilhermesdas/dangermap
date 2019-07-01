@@ -85,7 +85,7 @@ public class Repository {
 	public static Repository toRepository( JSONObject json ) {
 		
 		return new Repository ( 
-				Link.toLink( (JSONObject) json.get("link") ).getLink(),
+				(json.get("link")).toString(),
 				Neighborhood.toNeighborhood((JSONObject) json.get("neighborhood")),
 				Keyword.toKeywords( (JSONArray) json.get("keywords") )
 				);
