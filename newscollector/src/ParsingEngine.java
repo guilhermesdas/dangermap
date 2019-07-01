@@ -70,7 +70,6 @@ public class ParsingEngine {
 			    System.out.println("All tasks completed in "+minutes+" minutes, "+seconds+" seconds");
 				
 			}
-			
 		
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -118,9 +117,17 @@ public class ParsingEngine {
 		String text;
 		
 		// Get all seeds
-		ArrayList<Link> seeds = Newssites.getSeeds();
+		ArrayList<Link> seeds = Newssites.getLinks();
+		bairros = Newssites.getNeighborhoods();
+		whiteList = Newssites.getKeywords();
+		
+		System.out.println( seeds );
+		
 		// For each seed...
 		for ( Link source : seeds ) {
+			
+			System.out.println("Source: " + source.getLink());
+			
 			partial = 0;
 			add = 0;
 			
@@ -146,22 +153,18 @@ public class ParsingEngine {
 		    			Set<Neighborhood> foundedBairros = searchBairros(link.text()); //number of keywords occurrences
 		    			
 		    			//if ( !foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
-			    			Date dNow = new Date( );
-			    		    SimpleDateFormat ft = 
-			    		    new SimpleDateFormat ("yyyy/MM/dd HH:mm");	
 			    		    //hash = basededados.calculaMD5("0\n"+url+"\n"+text+"\n");  
 			    			partial++;
 			    			
 			    			Thread.sleep(delay);			    			
 			    			totalKeyWords = totalKeyWords+foundedKeywords.size();
-			    			
-			    			//new Scanner(System.in).next();
+
+			    		    url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
+			    		    text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]"," ");			    			
+		    				
+		    		    	Newssites.addLink(url, false);
 			    			
 			    			if ( !foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
-
-				    		    url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]"," ");
-				    		    text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]"," ");			    			
-			    				
 				    		    if (debug) {
 				    				System.out.printf("url: %s\ntext: %s\n", url, text );
 					    		    System.out.println(foundedKeywords);

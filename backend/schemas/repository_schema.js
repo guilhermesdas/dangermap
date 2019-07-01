@@ -9,13 +9,13 @@ var RepositorySchema = new mongoose.Schema({
         unique: true
     },
     neighborhood: {
-        type: String,
+        type: ObjectId,
         required: true,
         ref:'Neighborhood'
     },
     keywords: [
         {
-        type: String,
+        type: ObjectId,
         ref: 'Keywords'
         }
     ] 
