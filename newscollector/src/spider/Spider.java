@@ -1,8 +1,6 @@
 package spider;
 
 import org.json.simple.parser.ParseException;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 public class Spider {
 
@@ -44,7 +42,6 @@ public class Spider {
 
 				System.out.println("");
 				System.out.println("All tasks completed in " + minutes + " minutes, " + seconds + " seconds");
-				System.out.println("Links percorridos: " + ParsingEngine.linksPercorridos.size());
 
 			}
 

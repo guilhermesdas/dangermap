@@ -18,18 +18,13 @@ public class Newssites {
 		
 		Newssites.setIP("192.168.1.104");
 		System.out.println(baseurl);*/
-		
-		try {
+
 			//System.out.println(Newssites.addRepository(
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(getBlackList());
+			System.out.println(addLink("https://portaldoholanda.com.br",true));
 			//System.out.println(getLinks());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 	
@@ -147,7 +142,7 @@ public class Newssites {
 	
 	// Add a new keyword
 	@SuppressWarnings("unchecked")
-	public static JSONObject addLink( String link, boolean isBaseUrl ) throws ParseException {
+	public static Link addLink( String link, boolean isBaseUrl ) {
 		
 		try {
 			
@@ -157,11 +152,11 @@ public class Newssites {
 			
 			String response = Requests.sendPost(
 					baseurl + linksRoute + addRoute, json.toString());
-			return (JSONObject) parser.parse(response);
+			return Link.toLink( (JSONObject) parser.parse(response));
 			
-		} catch (IOException e) {
+		} catch (ParseException | IOException e) {
 			// TODO Auto-generated catch block
-			return (JSONObject) parser.parse(requestError);
+			return null;
 		}
 		
 	}

@@ -55,10 +55,15 @@ router.post("/add", urlencodedParser, async (req, res) => {
 	//console.log("Adding url: " + JSON.parse(req.body))
 
 	// Verify if theres another link in database
-	const flinks = await Links.find(req.body).exec()
+	var json = {
+		"link" : req.body.link,
+		"isBaseURL" : req.body.isBaseURL
+	}
+	console.log(json)
+	const flinks = await Links.find(json).exec()
 							.catch(err => res.json({status: false, statusMsg: err}) );
 	if ( flinks.length == 0 ){
-		const link = await Links.create(req.body)
+		const link = await Links.create(json)
 								.catch(err => res.json({status: false, statusMsg: err}) )
 		console.log("LInk added: " + link)
 		res.status(200).json(link)

@@ -32,13 +32,16 @@ public class ParsingEngine {
 	public static int delay = 200;
 	public static boolean debug = false;
 	public static ArrayList<Keyword> whiteList;
+	public static ArrayList<Keyword> blackList;
 	public static ArrayList<Neighborhood> bairros;
-	public static ArrayList<String> linksPercorridos = new ArrayList<String>();
+	public static ArrayList<Link> links_db;
 
 	public static boolean init() {
 		try {
 			whiteList = Newssites.getKeywords();
 			bairros = Newssites.getNeighborhoods();
+			blackList = Newssites.getBlackList();
+			links_db = Newssites.getLinks();
 			return true;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -58,17 +61,12 @@ public class ParsingEngine {
 		String url;
 		String text;
 
-		// Get all seeds
-		ArrayList<Link> seeds = Newssites.getLinks();
-		bairros = Newssites.getNeighborhoods();
-		whiteList = Newssites.getKeywords();
-
 		if ( debug ) {
-			System.out.println("Links to visit:\n" + seeds);
+			System.out.println("Links to visit:\n" + links_db);
 		}
 
 		// For each seed...
-		for (Link source : seeds) {
+		for (Link source : links_db) {
 
 			if ( debug ) {
 				System.out.println("Source: " + source.getLink());
@@ -98,7 +96,14 @@ public class ParsingEngine {
 					Set<Keyword> foundedKeywords = searchKeywords(link.text()); // number of keywords occurrences
 					Set<Neighborhood> foundedBairros = searchBairros(link.text()); // number of keywords occurrences
 					
-					boolean containsBlackList = containsBlackList( getDocument(url).title() );
+					boolean containsBlackList = false;
+					
+					try{
+						containsBlackList = containsBlackList( getDocument(url).title() )
+											|| containsBlackList( url );
+					} catch ( NullPointerException e ) {
+						continue;
+					}
 					
 					Thread.sleep(delay);
 					totalKeyWords = totalKeyWords + foundedKeywords.size();
@@ -119,9 +124,11 @@ public class ParsingEngine {
 						if ( debug ) {
 							System.out.println("Adding url in links...");
 						}
-						linkToAdd = Link.toLink(Newssites.addLink(url, false));	
-						continue;
+						linkToAdd = Newssites.addLink(url, false);	
 					}
+					
+					if ( linkToAdd == null )
+						continue;
 
 					// Adiciona no repositório caso encontre uma notícia com alguma das palavras chave
 					// e o nome de algum bairro de manaus
@@ -145,15 +152,7 @@ public class ParsingEngine {
 	}
 	
 	public static boolean containsBlackList(String text) {
-		
-		ArrayList<Keyword> blackList;
-		try {
-			blackList = Newssites.getBlackList();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			return false;
-		}
-		
+	
 		//System.out.println(blackList);
 		
 		text = text.toLowerCase();
