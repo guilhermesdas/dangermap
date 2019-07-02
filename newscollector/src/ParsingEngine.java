@@ -1,10 +1,8 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
-import java.text.SimpleDateFormat;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -24,12 +22,6 @@ import newssites.Newssites;
 public class ParsingEngine {
 
 	public static void main(String args[]) {
-
-		Document doc = ParsingEngine.getDocument(("https://www.portaldoholanda.com.br/noticia-hoje/estudante-da-ufam-descobre-eficacia-de-fruto-amazonico-no-combate-diabetes"));
-		
-		System.out.println(doc.text());
-		
-		/*
 		
 		try {
 
@@ -48,6 +40,8 @@ public class ParsingEngine {
 
 				startTime = System.currentTimeMillis();
 
+				ParsingEngine.start("debug");
+				
 				estimatedTime = System.currentTimeMillis() - startTime;
 
 				minutes = (int) (estimatedTime / (1000 * 60));
@@ -59,10 +53,10 @@ public class ParsingEngine {
 
 			}
 
-		} catch (ParseException e) {
+		} catch (ParseException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 
 	}
 
@@ -104,10 +98,10 @@ public class ParsingEngine {
 		// For each seed...
 		for (Link source : seeds) {
 
-			if (!linksPercorridos.contains(source.getLink())) {
-				continue;
-			}
-			linksPercorridos.add(source.getLink());
+			//if (!linksPercorridos.contains(source.getLink())) {
+			//	continue;
+			//}
+			//linksPercorridos.add(source.getLink());
 
 			System.out.println("Source: " + source.getLink());
 
@@ -127,18 +121,21 @@ public class ParsingEngine {
 
 					Set<Keyword> foundedKeywords = searchKeywords(link.text()); // number of keywords occurrences
 					Set<Neighborhood> foundedBairros = searchBairros(link.text()); // number of keywords occurrences
-
+					boolean containsBlackList = containsBlackList(link.text());
+					
 					Thread.sleep(delay);
 					totalKeyWords = totalKeyWords + foundedKeywords.size();
 
 					url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 					text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 
-					Newssites.addLink(url, false);
+					if ( !containsBlackList ) {
+						Newssites.addLink(url, false);						
+					}
 
 					// Adiciona no repositório caso encontre uma notícia com alguma das palavras chave
 					// e o nome de algum bairro de manaus
-					if (!foundedBairros.isEmpty() && !foundedKeywords.isEmpty()) {
+					if (!foundedBairros.isEmpty() && !foundedKeywords.isEmpty() && !containsBlackList ) {
 						if (debug) {
 							System.out.printf("url: %s\ntext: %s\n", url, text);
 							System.out.println(foundedKeywords);
@@ -161,6 +158,25 @@ public class ParsingEngine {
 		}
 
 		return result;
+	}
+	
+	public static boolean containsBlackList(String text) {
+		
+		ArrayList<Keyword> blackList;
+		try {
+			blackList = Newssites.getBlackList();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+		
+		boolean contains = false;
+		for ( Keyword keyword : blackList ) {
+			contains = contains && text.contains(keyword.getKeyword());
+		}
+		
+		return contains;
+		
 	}
 
 	// get founded bairros in a text

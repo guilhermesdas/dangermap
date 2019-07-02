@@ -14,8 +14,9 @@ def getlines(filename):
 
 # post some json data in url
 def post(url,jsondata):
-    resp = requests.post(url,data=jsondata)
-    return resp.json()
+    print(jsondata)
+    resp = requests.post(url,json=jsondata)
+    return resp
 
 # get some json data in url
 def get(url,jsondata):
@@ -71,6 +72,9 @@ def addlinks():
             "link": link,
             "isBaseURL": "true"
         }
+        
+        #print(jsondata)
+        
         # make post to add in database
         ans = post(baseurl+"links/add/",jsondata)
         print(ans)
@@ -109,14 +113,14 @@ def getrepository():
 
 def initrepository():
     # get keywords ids
-    keywords = getkeywords()[:5]
+    keywords = getkeywords()[:2]
     keywordsids = [ keyword["_id"] for keyword in keywords ]
 
     # get one neighborhood
-    neighborhoodid = getneighborhoods()[0]["_id"]
+    neighborhoodid = getneighborhoods()[3]["_id"]
 
     # get one link id
-    linkid = getlinks()[0]["_id"]
+    linkid = getlinks()[2]["_id"]
 
     # creates repository json example
     repositoryjson = {}
