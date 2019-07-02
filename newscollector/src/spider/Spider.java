@@ -26,7 +26,6 @@ public class Spider {
 
 			int minutes;
 			int seconds;
-
 			ParsingEngine.init();
 
 			while (true) {

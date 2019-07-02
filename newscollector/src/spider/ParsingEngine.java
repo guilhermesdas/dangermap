@@ -93,17 +93,21 @@ public class ParsingEngine {
 					url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 					text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 
-					Set<Keyword> foundedKeywords = searchKeywords(link.text()); // number of keywords occurrences
-					Set<Neighborhood> foundedBairros = searchBairros(link.text()); // number of keywords occurrences
+					Document doc = getDocument(url);
 					
-					boolean containsBlackList = false;
-					
-					try{
-						containsBlackList = containsBlackList( getDocument(url).title() )
-											|| containsBlackList( url );
-					} catch ( NullPointerException e ) {
+					if ( doc == null ) {
 						continue;
 					}
+					
+					Set<Keyword> foundedKeywords = searchKeywords(doc.title()); // number of keywords occurrences
+					Set<Neighborhood> foundedBairros = searchBairros(doc.title()); // number of keywords occurrences
+					foundedBairros.addAll(ParsingEngine.searchBairros( url ));
+					foundedBairros.addAll(ParsingEngine.searchBairros( doc.text() ));
+					
+					if ( containsBlackList( url ) )
+						continue;
+					
+					boolean containsBlackList = containsBlackList( doc.title() );
 					
 					Thread.sleep(delay);
 					totalKeyWords = totalKeyWords + foundedKeywords.size();
@@ -115,7 +119,7 @@ public class ParsingEngine {
 						System.out.println(foundedBairros);
 						// Newssites.add
 					} else
-						System.out.print(".");
+						System.out.println(".");
 					
 					Link linkToAdd = null;
 					
@@ -132,9 +136,9 @@ public class ParsingEngine {
 
 					// Adiciona no repositório caso encontre uma notícia com alguma das palavras chave
 					// e o nome de algum bairro de manaus
-					if (!foundedBairros.isEmpty() && !foundedKeywords.isEmpty() && !containsBlackList ) {
+					if (!foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
 
-						System.out.println("Adding url in repository...");
+						System.out.println("Adding url in repository: " + linkToAdd );
 						ArrayList<String> keywords_id = new ArrayList<String>();
 						for (Iterator<Keyword> it = foundedKeywords.iterator(); it.hasNext();) {
 							keywords_id.add(it.next().get_id());
@@ -160,7 +164,7 @@ public class ParsingEngine {
 		int nblacklists = 0;
 		for ( Keyword keyword : blackList ) {
 			if ( text.contains( keyword.getKeyword().toLowerCase() ) ) {
-				System.out.println("Contém blackword " + keyword.getKeyword() );
+				//System.out.println("Contém blackword " + keyword.getKeyword() );
 				nblacklists++;
 			}
 		}
@@ -178,7 +182,7 @@ public class ParsingEngine {
 		for (Neighborhood word : bairros) {
 
 			if (text.toLowerCase().contains(word.getName().toLowerCase())) {
-				System.out.println("Contém blackword " + word.getName() );
+				//System.out.println("Contém bairro " + word.getName() );
 				foundedBairros.add(word);
 			}
 		}
@@ -194,7 +198,8 @@ public class ParsingEngine {
 		for (Keyword word : whiteList) {
 
 			if (text.toLowerCase().contains(word.getKeyword().toLowerCase())) {
-				System.out.println("Contém blackword " + word.getKeyword() );
+				System.out.println("Contém keyword " + word.getKeyword() );
+				foundedWords.add(word);
 			}
 		}
 
@@ -236,6 +241,7 @@ public class ParsingEngine {
 				break;
 			} catch (SocketTimeoutException ex) {
 			} catch (MalformedURLException ep) {
+			} catch (IllegalArgumentException ep) {
 			} catch (IOException e) {
 			} finally {
 				i++;

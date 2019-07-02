@@ -23,7 +23,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println(addLink("https://portaldoholanda.com.br",true));
+			System.out.println( getKeywords() );
 			//System.out.println(getLinks());
 		
 	}
@@ -80,9 +80,13 @@ public class Newssites {
 	///////////////// KEYWORDS ///////////////
 	
 	// Get list of all keywords
-	public static ArrayList<Keyword> getKeywords() throws ParseException {
+	public static ArrayList<Keyword> getKeywords() {
 		
-		return Keyword.toKeywords(get(baseurl + keywordsRoute,""));
+		try{
+			return Keyword.toKeywords(get(baseurl + keywordsRoute,""));
+		} catch ( ParseException e ) {
+			return null;
+		}
 		
 	}
 	
