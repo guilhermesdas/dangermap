@@ -52,7 +52,7 @@ router.get("/seeds", (req, res) => {
 // /links/add will add a new link
 router.post("/add", urlencodedParser, async (req, res) => {
 
-	console.log(req.body)
+	//console.log(req.body)
 	const link = await Links.create(req.body)
 							.catch(err => res.json({status: false, statusMsg: err}) )
 
@@ -61,18 +61,7 @@ router.post("/add", urlencodedParser, async (req, res) => {
 	// link.save();
 	//console.log(link._id);
 	
-	return res.json({link	})
-
-	Links.findOne({ "link" : json["link"] }, (err,link) => {
-		if (err) {
-			return res.send(err);
-		} else if ( link != null ) {	
-			console.log("Link added: " + link)
-			return res.send(link);
-		} else {
-			return res.send({"status": false})
-		}
-	})
+	return res.json(link)
 
 });
 
