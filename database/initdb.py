@@ -9,13 +9,16 @@ from newscollector import *
 # database is now dropped.
 # you can check running getkeywords()
 
+
+# drop database
+initdb()
 #addkeywords()
 #addblacklist()
 #addlinks()
 #addneighborhoods()
 
-initrepository()
-print(getrepository())
+##initrepository()
+#print(getrepository())
 
 # url = 'http://localhost:3000/keywords'
 

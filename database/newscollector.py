@@ -1,8 +1,14 @@
 import requests
 import json
-
+import pymongo
 # base url
 baseurl = "http://localhost:3000/"
+dburl = "mongodb://localhost:27017/"
+dbname = "newscollector"
+
+def initdb():
+	db = pymongo.MongoClient(dburl)
+	db.drop_database(dbname)
 
 #################### BASE FUNCTIONS ####################
 
