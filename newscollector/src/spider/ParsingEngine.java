@@ -35,9 +35,16 @@ public class ParsingEngine {
 	public static ArrayList<Neighborhood> bairros;
 	public static ArrayList<String> linksPercorridos = new ArrayList<String>();
 
-	public static void init() throws ParseException {
-		whiteList = Newssites.getKeywords();
-		bairros = Newssites.getNeighborhoods();
+	public static boolean init() {
+		try {
+			whiteList = Newssites.getKeywords();
+			bairros = Newssites.getNeighborhoods();
+			return true;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+			return false;
+		}
 	}
 
 	// Start spider
@@ -84,16 +91,18 @@ public class ParsingEngine {
 					//	continue;
 					//}
 					//linksPercorridos.add(source.getLink());
+					
+					url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
+					text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 
 					Set<Keyword> foundedKeywords = searchKeywords(link.text()); // number of keywords occurrences
 					Set<Neighborhood> foundedBairros = searchBairros(link.text()); // number of keywords occurrences
-					boolean containsBlackList = containsBlackList(link.text());
+					
+					boolean containsBlackList = containsBlackList( getDocument(url).title() );
 					
 					Thread.sleep(delay);
 					totalKeyWords = totalKeyWords + foundedKeywords.size();
 
-					url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
-					text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 
 					if (debug) {
 						System.out.printf("url: %s\ntext: %s\n", url, text);
@@ -170,7 +179,7 @@ public class ParsingEngine {
 		for (Neighborhood word : bairros) {
 
 			if (text.toLowerCase().contains(word.getName().toLowerCase())) {
-				// System.out.println(parts.length);
+				System.out.println("Contém blackword " + word.getName() );
 				foundedBairros.add(word);
 			}
 		}
@@ -186,8 +195,7 @@ public class ParsingEngine {
 		for (Keyword word : whiteList) {
 
 			if (text.toLowerCase().contains(word.getKeyword().toLowerCase())) {
-				// System.out.println(parts.length);
-				foundedWords.add(word);
+				System.out.println("Contém blackword " + word.getKeyword() );
 			}
 		}
 

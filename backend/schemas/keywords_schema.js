@@ -5,8 +5,7 @@ var KeywordsSchema = new mongoose.Schema({
     keyword: {
         type: String,
         unique: true,
-        required: true,
-        trim: true
+        required: true
     },
     blacklist: {
         type: Boolean,

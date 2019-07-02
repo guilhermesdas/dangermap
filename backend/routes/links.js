@@ -52,16 +52,24 @@ router.get("/seeds", (req, res) => {
 // /links/add will add a new link
 router.post("/add", urlencodedParser, async (req, res) => {
 
-	//console.log(req.body)
-	const link = await Links.create(req.body)
-							.catch(err => res.json({status: false, statusMsg: err}) )
+	//console.log("Adding url: " + JSON.parse(req.body))
 
-	console.log(link);
+	// Verify if theres another link in database
+	const flinks = await Links.find(req.body).exec()
+							.catch(err => res.json({status: false, statusMsg: err}) );
+	if ( flinks.length == 0 ){
+		const link = await Links.create(req.body)
+								.catch(err => res.json({status: false, statusMsg: err}) )
+		console.log("LInk added: " + link)
+		res.status(200).json(link)
+	} else {
+		console.log("LInk already in database")
+		res.status(400).send({statusMsg: "Link already in database"})
+	}
 	// link.link = "oi"
 	// link.save();
 	//console.log(link._id);
 	
-	return res.json(link)
 
 });
 
