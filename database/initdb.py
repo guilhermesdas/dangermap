@@ -12,12 +12,12 @@ from newscollector import *
 
 # drop database
 initdb()
-#addkeywords()
-#addblacklist()
-#addlinks()
-#addneighborhoods()
+addkeywords()
+addblacklist()
+addlinks()
+addneighborhoods()
 
-##initrepository()
+#initrepository()
 #print(getrepository())
 
 # url = 'http://localhost:3000/keywords'

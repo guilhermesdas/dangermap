@@ -126,12 +126,21 @@ def initrepository():
     neighborhoodid = getneighborhoods()[3]["_id"]
 
     # get one link id
-    linkid = getlinks()[2]["_id"]
+    linkid1 = getlinks()[0]["_id"]
+    linkid2 = getlinks()[2]["_id"]
+    linkid3 = getlinks()[5]["_id"]
 
     # creates repository json example
     repositoryjson = {}
-    repositoryjson["link"] = linkid
+    repositoryjson["link"] = linkid1
     repositoryjson["neighborhood"] = neighborhoodid
     repositoryjson["keywords"] = keywordsids
-
     addrepository(repositoryjson)
+
+	# add other fake repositories
+    repositoryjson["link"] = linkid2
+    addrepository(repositoryjson)
+    repositoryjson["link"] = linkid3
+    addrepository(repositoryjson)
+
+
