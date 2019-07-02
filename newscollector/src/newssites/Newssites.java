@@ -23,7 +23,17 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d3255c",
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
-			System.out.println( getKeywords() );
+			try {
+				ArrayList<Repository> reps = getRepository();
+				for ( Repository rep : getRepository() ) {
+					if ( rep.getLink().getLink().contains("pagina") )
+						System.out.println(rep.get_id()) ;
+				}
+				//System.out.println( getRepository() );
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//System.out.println(getLinks());
 		
 	}

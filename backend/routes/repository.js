@@ -25,8 +25,26 @@ router.get("/", (req, res) => {
 });
 
 // 
+router.get("/newslink", (req, res) => {
+	//console.log("listing all repository.");	
+	// Repository.find({}, (err,repository) => {
+	// 	if (err) {
+	// 		res.send(err);
+	// 	} else {
+	// 		res.send(repository);
+	// 	}		
+	// }).populate("foundedKeywords_ids.foundedKeywords_id")
+
+	const link = Links.find({ link : req.body.links_id })
+	.populate("neighborhood")
+	.populate("link")
+	.populate("keywords")
+	.then(repo => res.json(repo));
+});
+
+// 
 router.get("/newsbairro", (req, res) => {
-	console.log("listing all repository.");	
+	console.log("get repository by bairro.");	
 	// Repository.find({}, (err,repository) => {
 	// 	if (err) {
 	// 		res.send(err);
@@ -80,10 +98,10 @@ router.post("/add", urlencodedParser, (req, res) => {
 	console.log(JSON.stringify(json));
 	var v = Repository.create(json)
 	if (v == null || v == undefined)
-		return res.send({ status: false });
+		res.send({ status: false });
 	else{
 		console.log("new repository added:\n", json);
-		return res.send({status: true})
+		res.send({status: true})
 	}
 
 });

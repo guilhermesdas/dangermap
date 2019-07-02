@@ -12,15 +12,23 @@ import newssites.Link;
 import newssites.Neighborhood;
 import newssites.Newssites;
 
-public class ParseTest {
+public class ParseTest implements Runnable {
+
+	String url;
 	
+	
+	
+	public ParseTest(String url) {
+		super();
+		this.url = url;
+	}
+
 	public static void main(String[] args) {
 		
-		ParsingEngine.init();
 		
-		String url = "https://www.portaldoholanda.com.br/policial/";
 		
-		Document doc = ParsingEngine.getDocument(url);
+		
+		/*Document doc = ParsingEngine.getDocument(url);
 		boolean debug = true;
 		
 		if ( doc == null ) {
@@ -86,8 +94,43 @@ public class ParseTest {
 				e.printStackTrace();
 			}
 
-		}
+		}*/
 		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			
+			long startTime;
+			// long startRemoveDuplicatesTime;
+			long estimatedTime;
+
+			int minutes;
+			int seconds;
+			ParsingEngine.init();
+
+			while (true) {
+
+				startTime = System.currentTimeMillis();
+
+				ParsingEngine.start("silence",url);
+
+				estimatedTime = System.currentTimeMillis() - startTime;
+
+				minutes = (int) (estimatedTime / (1000 * 60));
+				seconds = (int) ((estimatedTime / 1000) % 60);
+
+				System.out.println("");
+				System.out.println("All tasks completed in " + minutes + " minutes, " + seconds + " seconds");
+
+			}
+			
+		} catch (ParseException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

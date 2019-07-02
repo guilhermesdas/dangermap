@@ -20,6 +20,7 @@ import newssites.Link;
 import newssites.Neighborhood;
 // Newssites
 import newssites.Newssites;
+import newssites.Repository;
 
 public class ParsingEngine {
 	
@@ -34,14 +35,24 @@ public class ParsingEngine {
 	public static ArrayList<Keyword> whiteList;
 	public static ArrayList<Keyword> blackList;
 	public static ArrayList<Neighborhood> bairros;
-	public static ArrayList<Link> links_db;
-
+	public static ArrayList<Link> links_db = new ArrayList<Link>();
+	
 	public static boolean init() {
 		try {
 			whiteList = Newssites.getKeywords();
 			bairros = Newssites.getNeighborhoods();
 			blackList = Newssites.getBlackList();
-			links_db = Newssites.getLinks();
+			/*ArrayList<Repository> reps = Newssites.getRepository();
+			for ( Repository r : reps ) {
+				try{
+					links_db.add(r.getLink());				
+				} catch ( NullPointerException e ) {
+					
+				}
+			}*/
+			links_db.addAll( Newssites.getLinks() );
+			System.out.println(links_db);
+			System.out.println(links_db.size());
 			return true;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -51,7 +62,7 @@ public class ParsingEngine {
 	}
 
 	// Start spider
-	public static int start(String arg) throws ParseException, InterruptedException {
+	public static int start(String arg, String seed) throws ParseException, InterruptedException {
 
 		if (arg.equals("debug"))
 			debug = true;
@@ -61,15 +72,20 @@ public class ParsingEngine {
 		String url;
 		String text;
 
-		if ( debug ) {
+		//if ( debug ) {
 			System.out.println("Links to visit:\n" + links_db);
-		}
-
+		//}
+		
 		// For each seed...
-		for (Link source : links_db) {
+		//for (int i = links_db.size() - 1; i >= 0 ; i--) {
 
+			//String linkstr = "http://d24am.com/";
+			String linkstr = seed;
+			//if ( !linkstr.contains("d24am") )
+			//	return 0;
+			
 			if ( debug ) {
-				System.out.println("Source: " + source.getLink());
+				System.out.println("Source: " + linkstr);
 			}
 			Elements links = null;
 
@@ -77,7 +93,7 @@ public class ParsingEngine {
 			int totalLinks = 0;
 
 			// Get elements from link
-			links = getURL(source.getLink());
+			links = getURL(linkstr);
 			totalLinks = links.size();
 			result = result + totalLinks;
 
@@ -150,7 +166,7 @@ public class ParsingEngine {
 
 				}
 			}
-		}
+		//}
 
 		return result;
 	}
