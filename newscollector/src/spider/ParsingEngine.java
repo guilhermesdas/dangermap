@@ -42,15 +42,15 @@ public class ParsingEngine {
 			whiteList = Newssites.getKeywords();
 			bairros = Newssites.getNeighborhoods();
 			blackList = Newssites.getBlackList();
-			ArrayList<Repository> reps = Newssites.getRepository();
+			/*ArrayList<Repository> reps = Newssites.getRepository();
 			for ( Repository r : reps ) {
 				try{
 					links_db.add(r.getLink());				
 				} catch ( NullPointerException e ) {
 					
 				}
-			}
-			//links_db.addAll( Newssites.getLinks() );
+			}*/
+			links_db.addAll( Newssites.getLinks() );
 			System.out.println(links_db);
 			System.out.println(links_db.size());
 			return true;

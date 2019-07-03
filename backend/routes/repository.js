@@ -45,6 +45,7 @@ router.get("/newslink", (req, res) => {
 // 
 router.get("/newsbairro", (req, res) => {
 	console.log("get repository by bairro.");	
+	console.log(req.param("neighborhood"))
 	// Repository.find({}, (err,repository) => {
 	// 	if (err) {
 	// 		res.send(err);
@@ -52,8 +53,9 @@ router.get("/newsbairro", (req, res) => {
 	// 		res.send(repository);
 	// 	}		
 	// }).populate("foundedKeywords_ids.foundedKeywords_id")
+	//res.send("oi")
 
-	Repository.find({ neighborhood : req.body.neighborhoodid })
+	Repository.find({ neighborhood : req.param("neighborhood") })
 	.populate("neighborhood")
 	.populate("link")
 	.populate("keywords")

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"newscollector.users"},{"v":2,"unique":true,"key":{"username":1},"name":"username_1","ns":"newscollector.users","background":true}],"uuid":"1f1f2bd1ed4a4175907d425ab73ce4d2"}

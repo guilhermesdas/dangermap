@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"newscollector.keywords"},{"v":2,"unique":true,"key":{"keyword":1},"name":"keyword_1","ns":"newscollector.keywords","background":true}],"uuid":"17ccc3fb4de840d7960a66576743dc00"}
