@@ -7,7 +7,7 @@ var Links = require('../schemas/links_schema.js');
 // /links/ will return all links
 router.get("/", (req, res) => {
 	console.log("listing all links.");	
-	Links.find({}, (err,links) => {
+	Links.find({"isBaseURL" : false}, (err,links) => {
 		if (err) {
 			res.send(err);
 		} else {

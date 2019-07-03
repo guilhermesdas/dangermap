@@ -24,6 +24,7 @@ public class Newssites {
 			//		"5d1905d725c38d0f77d32565",
 			//		keywords ));
 			try {
+				System.out.println(getSeeds());
 				ArrayList<Repository> reps = getRepository();
 				for ( Repository rep : getRepository() ) {
 					if ( rep.getLink().getLink().contains("pagina") )

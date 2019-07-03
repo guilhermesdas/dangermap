@@ -14,19 +14,20 @@ import newssites.Newssites;
 
 public class ParseTest implements Runnable {
 
-	String url;
-	
-	
-	
-	public ParseTest(String url) {
-		super();
-		this.url = url;
-	}
-
 	public static void main(String[] args) {
 		
 		
-		
+		new Thread( new ParseTest( ) ).run();
+		/*ParsingEngine.init();
+		try {
+			ParsingEngine.start2("silnce");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		
 		/*Document doc = ParsingEngine.getDocument(url);
 		boolean debug = true;
@@ -104,18 +105,19 @@ public class ParseTest implements Runnable {
 		try {
 			
 			long startTime;
-			// long startRemoveDuplicatesTime;
 			long estimatedTime;
 
 			int minutes;
 			int seconds;
-			ParsingEngine.init();
+			
 
 			while (true) {
+				
+				ParsingEngine.init();
 
 				startTime = System.currentTimeMillis();
 
-				ParsingEngine.start("silence",url);
+				ParsingEngine.start2("silence");
 
 				estimatedTime = System.currentTimeMillis() - startTime;
 

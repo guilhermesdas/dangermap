@@ -1,14 +1,33 @@
 package spider;
 
+import java.util.ArrayList;
+
 import org.json.simple.parser.ParseException;
+
+import newssites.Link;
+import newssites.Newssites;
 
 public class Spider {
 
 	public static void main(String[] args) {
 
 		//new Thread( new ParseTest("https://d24am.com") ).run();
-		new Thread( new ParseTest("http://portaldoholanda.com.br") ).run();
-		new Thread( new ParseTest("http://portaldoholanda.com.br") ).run();
+		
+		try {
+			ArrayList< Link > seeds = Newssites.getSeeds();
+			
+			for ( Link seed : seeds ) {
+				if ( !seed.getLink().contains("portaldoholanda") )
+					new Thread( new ParseTest()).run();
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//new Thread( new ParseTest("http://portaldoholanda.com.br") ).run();
+		//new Thread( new ParseTest("https://d24am.com/") ).run();
 		
 		/*
 		 * ParsingEngine.init(); Document doc = ParsingEngine.getDocument(
