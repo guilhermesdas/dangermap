@@ -11,20 +11,34 @@ public class Repository {
 	private Neighborhood neighborhood;
 	private ArrayList<Keyword> keywords;
 	private String _id;
+	private String brief;
 	
 
-	public Repository(Link link, Neighborhood neighborhood, ArrayList<Keyword> keywords, String _id) {
+
+	public Repository(Link link, Neighborhood neighborhood, ArrayList<Keyword> keywords, String _id, String brief) {
 		super();
 		this.link = link;
 		this.neighborhood = neighborhood;
 		this.keywords = keywords;
 		this._id = _id;
+		this.brief = brief;
 	}
 
 
 
 	public Link getLink() {
 		return link;
+	}
+
+
+	public String getBrief() {
+		return brief;
+	}
+
+
+
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 
 
@@ -68,8 +82,8 @@ public class Repository {
 	}
 
 	public String toString() {
-		return String.format("_id: %s\nLink: %s\nNeighborhood: %s\nKeywords: %s\n",
-				this._id, this.link, this.neighborhood, this.keywords );
+		return String.format("%s\n%s\n%s\n[%s]\n%s\n\n",
+				this._id, this.link.getLink(), this.neighborhood, this.keywords, this.brief );
 	}
 	
 	public static Repository toRepository( JSONObject json ) {
@@ -78,7 +92,8 @@ public class Repository {
 				Link.toLink( (JSONObject) (json.get("link"))),
 				Neighborhood.toNeighborhood((JSONObject) json.get("neighborhood")),
 				Keyword.toKeywords( (JSONArray) json.get("keywords") ),
-				json.get("_id").toString()
+				json.get("_id").toString(),
+				json.get("brief").toString()
 				);
 	}
 	
