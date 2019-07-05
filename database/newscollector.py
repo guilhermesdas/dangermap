@@ -90,6 +90,9 @@ def getlinks():
     # https get in server
     return get(baseurl+"links/",{})
 
+def removelink(_id):
+    return post(baseurl+"links/remove",{ "_id" : _id })
+
 #################### NEIGHBORHOODS ####################
 
 # add neighborhoods
@@ -147,3 +150,13 @@ def initrepository():
     addrepository(repositoryjson)
 
 
+
+
+
+
+
+######### PRINT
+
+def printl(l):
+    for i in l:
+        print(i)
