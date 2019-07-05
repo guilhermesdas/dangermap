@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 		} else {
 			res.send(keywords);
 		}		
-	})
+	}).sort({name: 1})
 });
 
 // /neighborhood/add/ will a neighborhood from manaus city
@@ -39,6 +39,22 @@ router.post("/remove",urlencodedParser, (req,res) => {
 	console.log(json["_id"])
 	var v = Neighborhood.findOneAndDelete(json).exec()
 	return res.send({"status": v.error})
+
+});
+
+// /neighborhood/update will update a neighborhood with given id
+router.post("/update",urlencodedParser, async (req,res) => {
+
+	var json = req.body;
+	//console.log(json)
+	var bairro = await Neighborhood.findById(json._id).exec()
+						.catch( err => res.json({status: false, statusMsg: err}) );
+	bairro.lat = json.lat
+	bairro.lng = json.lng
+	bairro.name = json.name
+	bairro.save()
+	console.log("Novo bairro: "+ bairro)
+	res.status(200).send(bairro)
 
 });
 
