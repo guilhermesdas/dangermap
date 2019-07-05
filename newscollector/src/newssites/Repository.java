@@ -11,7 +11,19 @@ public class Repository {
 	private Neighborhood neighborhood;
 	private ArrayList<Keyword> keywords;
 	private String _id;
+	private String brief;
 	
+
+
+	public Repository(Link link, Neighborhood neighborhood, ArrayList<Keyword> keywords, String _id, String brief) {
+		super();
+		this.link = link;
+		this.neighborhood = neighborhood;
+		this.keywords = keywords;
+		this._id = _id;
+		this.brief = brief;
+	}
+
 
 	public Repository(Link link, Neighborhood neighborhood, ArrayList<Keyword> keywords, String _id) {
 		super();
@@ -21,10 +33,19 @@ public class Repository {
 		this._id = _id;
 	}
 
-
-
 	public Link getLink() {
 		return link;
+	}
+
+
+	public String getBrief() {
+		return brief;
+	}
+
+
+
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 
 
@@ -79,6 +100,7 @@ public class Repository {
 				Neighborhood.toNeighborhood((JSONObject) json.get("neighborhood")),
 				Keyword.toKeywords( (JSONArray) json.get("keywords") ),
 				json.get("_id").toString()
+				// brief.
 				);
 	}
 	

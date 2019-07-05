@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+
 import org.json.simple.parser.JSONParser;
 
 public class Newssites {
@@ -179,10 +180,29 @@ public class Newssites {
 	///////////////// REPOSITORY ///////////////
 	
 	// Get list of all links
-	public static ArrayList<Repository> getRepository() throws ParseException {
+	public static ArrayList<Repository> getRepository() {
 
-		return Repository.toRepositories(get(baseurl + repositoryRoute,""));
-		
+		try {
+			return Repository.toRepositories(get(baseurl + repositoryRoute,""));
+		} catch ( ParseException pex ) {
+			System.out.println(pex.getMessage());
+			return null;
+		}
+	}
+	
+	// Update repositories  with brief
+	public static JSONObject updateRepositoryBrief( String _id, String brief ) {
+
+
+		JSONObject repjson = new JSONObject();
+		repjson.put("_id", _id);
+		repjson.put("brief",brief);
+		try {
+			return post(baseurl + repositoryRoute + "/updatebrief", repjson.toString());
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 	
 	// Add a new keyword

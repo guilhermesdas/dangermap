@@ -28,14 +28,16 @@ router.post("/remove",urlencodedParser, (req,res) => {
 });
 
 // /repository/delete will delete a neighborhood with given id
-router.post("/update",urlencodedParser, async (req,res) => {
+router.post("/updatebrief",urlencodedParser, async (req,res) => {
 
 	var json = req.body;
-	console.log(json)
+	//console.log(json)
 	var rep = await Repository.findById(json._id).exec()
 						.catch( err => res.json({status: false, statusMsg: err}) );
 	rep.brief = json.brief
 	rep.save()
+	console.log(rep.brief)
+	console.log()
 	res.status(200).send(rep)
 
 });
