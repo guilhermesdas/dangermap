@@ -13,30 +13,8 @@ public class Newssites {
 	
 	public static void main(String [] args ) {
 		
-		/*ArrayList<String> keywords = new ArrayList<String>();
-		keywords.add("5d19060725c38d0f77d325a2");
-		keywords.add("5d19060725c38d0f77d325ad");
-		
-		Newssites.setIP("192.168.1.104");
-		System.out.println(baseurl);*/
-
-			//System.out.println(Newssites.addRepository(
-			//		"5d1905d725c38d0f77d3255c",
-			//		"5d1905d725c38d0f77d32565",
-			//		keywords ));
-			try {
-				System.out.println(getSeeds());
-				ArrayList<Repository> reps = getRepository();
-				for ( Repository rep : getRepository() ) {
-					if ( rep.getLink().getLink().contains("pagina") )
-						System.out.println(rep.get_id()) ;
-				}
-				//System.out.println( getRepository() );
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//System.out.println(getLinks());
+			
+			System.out.println(getRepository());
 		
 	}
 	
@@ -207,7 +185,7 @@ public class Newssites {
 	
 	// Add a new keyword
 	@SuppressWarnings("unchecked")
-	public static JSONObject addRepository( String link_id, String neighborhood_id, ArrayList<String> keywords_id ) throws ParseException {
+	public static JSONObject addRepository( String link_id, String neighborhood_id, ArrayList<String> keywords_id, String brief ) throws ParseException {
 		
 		try {
 			
@@ -215,28 +193,7 @@ public class Newssites {
 			json.put("link",link_id);
 			json.put("neighborhood", neighborhood_id);
 			json.put("keywords", keywords_id);
-			
-			String response = Requests.sendPost(
-					baseurl + repositoryRoute + addRoute, json.toString());
-			return (JSONObject) parser.parse(response);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return (JSONObject) parser.parse(requestError);
-		}
-		
-	}
-	
-	// Add a new keyword
-	@SuppressWarnings("unchecked")
-	public static JSONObject signup( String link_id, String neighborhood_id, String keywords_id ) throws ParseException {
-		
-		try {
-			
-			JSONObject json = new JSONObject();
-			json.put("links",link_id);
-			json.put("neighborhood", neighborhood_id);
-			json.put("keywords", keywords_id);
+			json.put("brief",brief);
 			
 			String response = Requests.sendPost(
 					baseurl + repositoryRoute + addRoute, json.toString());

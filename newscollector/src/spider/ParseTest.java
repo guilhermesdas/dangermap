@@ -1,8 +1,6 @@
 package spider;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -65,7 +63,7 @@ public class ParseTest implements Runnable {
 
 				startTime = System.currentTimeMillis();
 
-				ParsingEngine.start2("silence");
+				ParsingEngine.start("silence");
 
 				estimatedTime = System.currentTimeMillis() - startTime;
 
