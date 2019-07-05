@@ -19,7 +19,11 @@ var RepositorySchema = new mongoose.Schema({
         type: ObjectId,
         ref: 'Keywords'
         }
-    ] 
+    ],
+    brief: {
+        type: String,
+        required: false
+    }
 });
 
 var Repository = mongoose.model('Repository', RepositorySchema);

@@ -10,13 +10,6 @@ var Links = require('../schemas/links_schema')
 // /repository/ will return all repository
 router.get("/", (req, res) => {
 	console.log("listing all repository.");	
-	// Repository.find({}, (err,repository) => {
-	// 	if (err) {
-	// 		res.send(err);
-	// 	} else {
-	// 		res.send(repository);
-	// 	}		
-	// }).populate("foundedKeywords_ids.foundedKeywords_id")
 	Repository.find()
 	.populate("neighborhood")
 	.populate("link")
@@ -34,72 +27,29 @@ router.post("/remove",urlencodedParser, (req,res) => {
 
 });
 
-// 
-router.get("/newslink", (req, res) => {
-	//console.log("listing all repository.");	
-	// Repository.find({}, (err,repository) => {
-	// 	if (err) {
-	// 		res.send(err);
-	// 	} else {
-	// 		res.send(repository);
-	// 	}		
-	// }).populate("foundedKeywords_ids.foundedKeywords_id")
+// /repository/delete will delete a neighborhood with given id
+router.post("/update",urlencodedParser, async (req,res) => {
 
-	const link = Links.find({ link : req.body.links_id })
-	.populate("neighborhood")
-	.populate("link")
-	.populate("keywords")
-	.then(repo => res.json(repo));
+	var json = req.body;
+	console.log(json)
+	var rep = await Repository.findById(json._id).exec()
+						.catch( err => res.json({status: false, statusMsg: err}) );
+	rep.brief = json.brief
+	rep.save()
+	res.status(200).send(rep)
+
 });
 
-// 
+// search news related with given neighborhood 
 router.get("/newsbairro", (req, res) => {
 	console.log("get repository by bairro.");	
 	console.log(req.param("neighborhood"))
-	// Repository.find({}, (err,repository) => {
-	// 	if (err) {
-	// 		res.send(err);
-	// 	} else {
-	// 		res.send(repository);
-	// 	}		
-	// }).populate("foundedKeywords_ids.foundedKeywords_id")
-	//res.send("oi")
 
 	Repository.find({ neighborhood : req.param("neighborhood") })
 	.populate("neighborhood")
 	.populate("link")
 	.populate("keywords")
 	.then(repo => res.json(repo));
-});
-
-// /repository/add will add a repository
-router.post("/add2", urlencodedParser, (req, res) => {
-
-	//var json = Object.assign({}, REPOSITORY_JSONIN);
-	var json = req.body;
-	console.log("incoming: ",JSON.stringify(json));
-
-	link = Links.findOne({"link": json["link"]}).exec(function(err,data) {
-		return data
-	})
-	console.log(link)
-
-	repjson = {
-		"link" : "linkid"
-	}
-
-	console.log(JSON.stringify(repjson));
-
-	res.send(repjson)
-
-	// var v = Repository.create(json)
-	// if (v == null || v == undefined)
-	// 	return res.send({ status: false });
-	// else{
-	// 	console.log("new repository added:\n", json);
-	// 	return res.send({status: true})
-	// }
-
 });
 
 // /repository/add will add a repository
