@@ -117,6 +117,9 @@ def addrepository(jsondata):
 def getrepository():
     return get(baseurl+"repository/",{})
 
+def removerepository(_id):
+    return post(baseurl+"repository/remove",{ "_id" : _id })
+
 def initrepository():
     # get keywords ids
     keywords = getkeywords()[:2]

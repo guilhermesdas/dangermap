@@ -24,6 +24,16 @@ router.get("/", (req, res) => {
 	.then(repo => res.json(repo));
 });
 
+// /repository/delete will delete a neighborhood with given id
+router.post("/remove",urlencodedParser, (req,res) => {
+
+	var json = req.body;
+	console.log(json["_id"])
+	var v = Repository.findOneAndDelete(json).exec()
+	return res.send({"status": v.error})
+
+});
+
 // 
 router.get("/newslink", (req, res) => {
 	//console.log("listing all repository.");	
