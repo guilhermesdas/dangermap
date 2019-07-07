@@ -1,6 +1,7 @@
 package spider;
 
 import java.io.IOException;
+import static java.nio.charset.StandardCharsets.*;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.util.Set;
@@ -180,6 +181,8 @@ public class ParsingEngine {
 
 		//if (sucess)
 		//	links = document.select("a[href]");
+		//System.out.println(document.charset());
+		//document.charset(ISO_8859_1);
 		return document;
 	}
 	

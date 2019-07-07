@@ -1,6 +1,7 @@
 package spider;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,8 @@ public class ParseTest implements Runnable {
 			}
 
 			// Encoding string correctly
-			byte[] txt = doc.title().getBytes();
-			String brief = new String(txt, ISO_8859_1 );
+			byte[] txt =  Newssites.removeBugInChar( doc.title()).getBytes(UTF_8);
+			String brief = new String( txt, ISO_8859_1 );
 			
 			JSONObject response = Newssites.updateRepositoryBrief(rep.get_id(), brief );
 			System.out.println(response.toString());
