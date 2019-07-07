@@ -1,5 +1,7 @@
 package spider;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+
 import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
@@ -38,8 +40,12 @@ public class ParseTest implements Runnable {
 			if ( doc == null ) {
 				continue;
 			}
+
+			// Encoding string correctly
+			byte[] txt = doc.title().getBytes();
+			String brief = new String(txt, ISO_8859_1 );
 			
-			JSONObject response = Newssites.updateRepositoryBrief(rep.get_id(), doc.title() );
+			JSONObject response = Newssites.updateRepositoryBrief(rep.get_id(), brief );
 			System.out.println(response.toString());
 			
 		}

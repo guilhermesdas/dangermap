@@ -1,6 +1,7 @@
 package newssites;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
@@ -8,13 +9,30 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import org.json.simple.parser.JSONParser;
+import static java.nio.charset.StandardCharsets.*;
 
 public class Newssites {
 	
 	public static void main(String [] args ) {
 		
+		try {
+			ArrayList<Repository> reps = Newssites.getRepository();
+			Repository rep = reps.get(0);
+			String str = "áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛçñ";
+			byte[] txt = str.getBytes();
+			//System.out.println(new String( txt,  ));
+			//StringBuilder strb = new StringBuilder( new String( txt, ISO_8859_2 ) );
+			String brief = new String( txt, ISO_8859_1 );
+			System.out.println(brief);
+		
 			
-			System.out.println(getRepository());
+			Newssites.updateRepositoryBrief("5d1adad36650b40402139009",brief) ;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
