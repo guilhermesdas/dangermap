@@ -53,13 +53,17 @@ public class Newssites {
 	static final JSONArray error = new JSONArray();
 	
 	public static String removeBugInChar(String s) {
-		s.replaceAll("Á", "A");
-		s.replaceAll("É", "E");
-		s.replaceAll("Í","I");
-		s.replaceAll("Ó","O");
-		s.replaceAll("Ú", "U");
-		s.replaceAll("Ç", "C");
-		s.replaceAll("“","\"");
+		s = s.replaceAll("Á", "A");
+		s = s.replaceAll("É", "E");
+		s = s.replaceAll("Ê", "E");
+		s = s.replaceAll("Í","I");
+		s = s.replaceAll("Ó","O");
+		s = s.replaceAll("Ú", "U");
+		s = s.replaceAll("Ç", "C");
+		s = s.replaceAll("“","\"");
+		s = s.replaceAll("‘", "\"");
+		s = s.replaceAll("’", "\"");
+		s = s.replaceAll("”", "\"");
 		return s;
 	}
 	

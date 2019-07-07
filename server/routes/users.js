@@ -42,11 +42,11 @@ router.post("/signin", urlencodedParser, (req, res) => {
     // Authenticate user
 	User.authenticate(json.username, json.password, (err, user) => {
         if (err) {
-            res.send({status: false, error: err.message});
+            res.status(400).send({ error: err.message});
         } else {
             console.log("================================")
             console.log("USER: "+json.username)
-            res.send({status: true, data: user})
+            res.status(200).json(user)
         }
     });
 
