@@ -14,6 +14,7 @@ router.get("/", (req, res) => {
 	.populate("neighborhood")
 	.populate("link")
 	.populate("keywords")
+	.sort({link: 1})
 	.then(repo => res.json(repo));
 });
 
@@ -68,6 +69,33 @@ router.get("/find", (req, res) => {
 	.populate("keywords")
 	.then(repo => res.json(repo));
 });
+
+// get a repository from id
+router.post("/removebylinkid", (req, res) => {
+	console.log("get repository by link id.");	
+	console.log(req.param("linkid"))
+
+	Repository.findOneAndRemove({ link: req.param("linkid") })
+	.then(res.status(200).send())
+
+});
+
+// /repository/add will add a repository
+router.post("/add", urlencodedParser, (req, res) => {
+
+	//var json = Object.assign({}, REPOSITORY_JSONIN);
+	var json = req.body;
+	console.log(JSON.stringify(json));
+	var v = Repository.create(json)
+	if (v == null || v == undefined)
+		res.send({ status: false });
+	else{
+		console.log("new repository added:\n", json);
+		res.send({status: true})
+	}
+
+});
+
 // /repository/add will add a repository
 router.post("/add", urlencodedParser, (req, res) => {
 
