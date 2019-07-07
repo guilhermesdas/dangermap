@@ -8,6 +8,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import spider.ParsingEngine;
+
 import org.json.simple.parser.JSONParser;
 import static java.nio.charset.StandardCharsets.*;
 
@@ -17,16 +19,16 @@ public class Newssites {
 		
 		try {
 			ArrayList<Repository> reps = Newssites.getRepository();
-			Repository rep = reps.get(0);
-			String str = "áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛçñ";
-			byte[] txt = str.getBytes();
+			Repository rep = reps.get(10);
+			String url = rep.getLink().getLink(); //"áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛçñ\u00C1\u00C0";
+			byte[] txt =  removeBugInChar( ParsingEngine.getDocument(url).title()).getBytes(UTF_8);
+			System.out.println(txt);
 			//System.out.println(new String( txt,  ));
 			//StringBuilder strb = new StringBuilder( new String( txt, ISO_8859_2 ) );
-			String brief = new String( txt, ISO_8859_1 );
+			String brief = new String( txt, ISO_8859_1 );//ParsingEngine.getDocument(url).title(); //
 			System.out.println(brief);
-		
 			
-			Newssites.updateRepositoryBrief("5d1adad36650b40402139009",brief) ;
+			Newssites.updateRepositoryBrief(rep.get_id(),brief) ;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -49,6 +51,17 @@ public class Newssites {
 	static final String errorparse = "[{\"message\": \"Erro in parsing json\"}]";
 	static final JSONParser parser = new JSONParser();
 	static final JSONArray error = new JSONArray();
+	
+	public static String removeBugInChar(String s) {
+		s.replaceAll("Á", "A");
+		s.replaceAll("É", "E");
+		s.replaceAll("Í","I");
+		s.replaceAll("Ó","O");
+		s.replaceAll("Ú", "U");
+		s.replaceAll("Ç", "C");
+		s.replaceAll("“","\"");
+		return s;
+	}
 	
 	public static void setIP(String IP) {
 		baseurl = "http://" + IP + ":3000/";
@@ -187,14 +200,15 @@ public class Newssites {
 	}
 	
 	// Update repositories  with brief
-	public static JSONObject updateRepositoryBrief( String _id, String brief ) {
+	public static JSONObject updateRepositoryBrief( String _id, String brief ) {				
 
-
-		JSONObject repjson = new JSONObject();
-		repjson.put("_id", _id);
-		repjson.put("brief",brief);
+		
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put( "_id", _id );
+		jsonobj.put("brief", brief);
+		
 		try {
-			return post(baseurl + repositoryRoute + "/updatebrief", repjson.toString());
+			return post(baseurl + repositoryRoute + "/updatebrief", jsonobj.toString());
 		} catch (ParseException e) {
 			System.out.println(e.getMessage());
 			return null;
