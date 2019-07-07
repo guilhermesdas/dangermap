@@ -56,6 +56,18 @@ router.get("/newsbairro", (req, res) => {
 	.then(repo => res.json(repo));
 });
 
+
+// get a repository from id
+router.get("/find", (req, res) => {
+	console.log("get repository by id.");	
+	console.log(req.param("id"))
+
+	Repository.findById(req.param("id"))
+	.populate("neighborhood")
+	.populate("link")
+	.populate("keywords")
+	.then(repo => res.json(repo));
+});
 // /repository/add will add a repository
 router.post("/add", urlencodedParser, (req, res) => {
 

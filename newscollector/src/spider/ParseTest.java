@@ -47,7 +47,7 @@ public class ParseTest implements Runnable {
 			String brief = new String( txt, ISO_8859_1 );
 			
 			JSONObject response = Newssites.updateRepositoryBrief(rep.get_id(), brief );
-			System.out.println(response.toString());
+			System.out.println( response.toString() );
 			
 		}
 	}
