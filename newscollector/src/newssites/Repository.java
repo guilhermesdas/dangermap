@@ -68,9 +68,7 @@ public class Repository {
 	public void setKeywords(ArrayList<Keyword> keywords) {
 		this.keywords = keywords;
 	}
-
-
-
+	
 	public String get_id() {
 		return _id;
 	}
