@@ -1,14 +1,12 @@
 package newssites;
 
 import java.io.IOException;
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import spider.ParsingEngine;
 
 import org.json.simple.parser.JSONParser;
 import static java.nio.charset.StandardCharsets.*;
@@ -17,7 +15,9 @@ public class Newssites {
 	
 	public static void main(String [] args ) {
 		
-		try {
+		System.out.println( findLinks("emtempo") );
+		
+		/*try {
 			ArrayList<Repository> reps = Newssites.getRepository();
 			Repository rep = reps.get(10);
 			String url = rep.getLink().getLink(); //"áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛçñ\u00C1\u00C0";
@@ -33,7 +33,7 @@ public class Newssites {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 	}
@@ -64,7 +64,10 @@ public class Newssites {
 		s = s.replaceAll("‘", "\"");
 		s = s.replaceAll("’", "\"");
 		s = s.replaceAll("”", "\"");
-		return s;
+		byte[] txt =  removeBugInChar(s).getBytes(UTF_8);
+		String brief = new String( txt, ISO_8859_1 );//ParsingEngine.getDocument(url).title(); //
+		
+		return brief;
 	}
 	
 	public static void setIP(String IP) {
@@ -160,6 +163,18 @@ public class Newssites {
 	public static ArrayList<Link> getLinks() throws ParseException {
 		
 		return Link.toLinks(get(baseurl + linksRoute,""));
+		
+	}
+	
+	// Get list of all links
+	public static ArrayList<Link> findLinks(String url) {
+		
+		try {
+			return Link.toLinks(get(baseurl + linksRoute + "find?link=" + url,""));
+		}
+		catch ( ParseException | NullPointerException ex ) {
+			return new ArrayList<Link>();
+		}
 		
 	}
 

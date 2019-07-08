@@ -43,8 +43,8 @@ public class ParsingEngine {
 			whiteList = Newssites.getKeywords();
 			bairros = Newssites.getNeighborhoods();
 			blackList = Newssites.getBlackList();
-			/*ArrayList<Repository> reps = Newssites.getRepository();
-			for ( Repository r : reps ) {
+			ArrayList<Repository> reps = Newssites.getRepository();
+			/*for ( Repository r : reps ) {
 				try{
 					links_db.add(r.getLink());				
 				} catch ( NullPointerException e ) {
@@ -53,7 +53,7 @@ public class ParsingEngine {
 			}*/
 			links_db.addAll( Newssites.getLinks() );
 			//System.out.println(links_db);
-			//System.out.println(links_db.size());
+			System.out.println(links_db.size());
 			return true;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -65,13 +65,13 @@ public class ParsingEngine {
 	// Start spider with all founded links in database
 	public static void start(String arg) throws ParseException, InterruptedException {
 
-		System.out.println("thread start2 running");
+		System.out.println("thread start running");
 		
 		if (arg.equals("debug"))
 			debug = true;
 
-		for ( Link link : links_db ) {
-			parse(link.getLink());
+		for ( int i = links_db.size()-1; i >= 0; i-- ) {
+			parse( links_db.get(i).getLink() );
 		}
 		
 	}
@@ -129,7 +129,7 @@ public class ParsingEngine {
 		for (Keyword word : whiteList) {
 
 			if (text.toLowerCase().contains(word.getKeyword().toLowerCase())) {
-				System.out.println("Contém keyword " + word.getKeyword() );
+				//System.out.println("Contém keyword " + word.getKeyword() );
 				foundedWords.add(word);
 			}
 		}
@@ -229,6 +229,9 @@ public class ParsingEngine {
 		int totalKeyWords = 0;
 		int totalLinks = 0;
 
+		if ( linkstr.contains("portaldoholanda") )
+			return;
+		
 		// Get elements from link
 		links = getURL(linkstr);
 		
@@ -243,23 +246,26 @@ public class ParsingEngine {
 				//}
 				//linksPercorridos.add(source.getLink());
 				
-				String url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
+				String url = link.attr("abs:href"); //.replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 				
-				// Pula caso link contenha uma blackword
-				if ( containsBlackList( url ) )
+				if ( url.contains("portaldoholanda") )
+					continue;
+				
+				// Pula caso link já esteja salvo ou contenha uma keyword na blacklist
+				if ( !Newssites.findLinks(url).isEmpty() || containsBlackList( url ) )
 					continue;
 				
 				// Recupera um jsoup document do link, para recuperar titulo e texto da noticia
 				Document doc = getDocument(url);
-				Elements elements = doc.getAllElements();
 				
 				if ( doc == null ) {
 					continue;
 				}
 				
 				// Procura keywords e nome dos bairros
-				Set<Keyword> foundedKeywords = null;
-				Set<Neighborhood> foundedBairros = null;				
+				Elements elements = doc.getAllElements();
+				Set<Keyword> foundedKeywords = new HashSet<Keyword>();
+				Set<Neighborhood> foundedBairros = new HashSet<Neighborhood>();	
 				for ( Element e : elements ) {
 					//Tag tag = e.tag();
 					//Elements ess = e.getElementsByTag(tag.getTitle());
@@ -277,7 +283,7 @@ public class ParsingEngine {
 
 
 				if (debug) {
-					System.out.printf("url: %s", url);
+					System.out.printf("url: %s\n", url);
 					System.out.println(foundedKeywords);
 					System.out.println(foundedBairros);
 					// Newssites.add
@@ -310,7 +316,7 @@ public class ParsingEngine {
 					Newssites.addRepository(linkToAdd.get_id(),
 							foundedBairros.iterator().next().get_id(), 
 							keywords_id,
-							doc.title() );
+							doc.title());
 
 				}
 
