@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_location_on_24px"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_menu_list_heatMap"
+            android:icon="@drawable/ic_menu_map"
+            android:title="@string/menu_list_heatMap" />
+        <item
+            android:id="@+id/nav_menu_list"
+            android:icon="@drawable/ic_menu_list"
+            android:title="@string/menu_list" />
+    </group>
+
+    <item android:title="Conta">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_login"
+                android:title="@string/menu_login" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">DangerMap</string>
+    <string name="navigation_drawer_open">Abrir Menui</string>
+    <string name="navigation_drawer_close">Fechar Menu</string>
+    <string name="nav_header_title">Usuário</string>
+    <string name="nav_header_subtitle">contato.dangermap@gmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Configuração</string>
+
+    <string name="menu_home">Início</string>
+    <string name="menu_gallery">Galeria</string>
+    <string name="menu_tools">Configurações</string>
+    <string name="menu_share">Compartilhar</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="title_baseline_location">Localização</string>
+    <string name="menu_list">Lista de Eventos</string>
+    <string name="menu_list_heatMap">Mapa de Calor</string>
+    <string name="menu_login">Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_provider_fragment_v3">Map</string>
+    <string name="title_activity_heat_maps_fragment">Map</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_heat_maps">Map</string>
+    <string name="title_activity_bairro">BairroActivity</string>
+    <string name="title_activity_teste">teste</string>
+
+    <!-- Variáveis -->
+    <string name="ip_address">192.168.1.127</string>
+</resources>
