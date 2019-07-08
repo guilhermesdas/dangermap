@@ -4,10 +4,16 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
+import org.jsoup.select.Elements;
 
 import newssites.*;
 
@@ -15,7 +21,18 @@ public class ParseTest implements Runnable {
 	
 	public static void main(String[] args) {
 		
-		updateAllBriefs();
+		String url = "https://d.emtempo.com.br/policia/163288/em-manaus-homem-que-cumpre-pena-no-regime-aberto-desaparece";
+		Document doc = ParsingEngine.getDocument(url);
+		Elements es = doc.getAllElements();
+		ParsingEngine.init();
+		for ( Element e : es ) {
+			//Tag tag = e.tag();
+			//Elements ess = e.getElementsByTag(tag.getTitle());
+			if ( e.text().split(" ").length > 15 && !ParsingEngine.containsBlackList(e.text()) )
+				System.out.println( e.text() + e.id() );
+		}
+		
+		//updateAllBriefs();
 		
 	}
 	

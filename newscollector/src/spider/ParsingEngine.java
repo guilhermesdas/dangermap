@@ -52,8 +52,8 @@ public class ParsingEngine {
 				}
 			}*/
 			links_db.addAll( Newssites.getLinks() );
-			System.out.println(links_db);
-			System.out.println(links_db.size());
+			//System.out.println(links_db);
+			//System.out.println(links_db.size());
 			return true;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -244,7 +244,6 @@ public class ParsingEngine {
 				//linksPercorridos.add(source.getLink());
 				
 				String url = link.attr("abs:href").replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
-				String text = link.text().replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 				
 				// Pula caso link contenha uma blackword
 				if ( containsBlackList( url ) )
@@ -252,16 +251,24 @@ public class ParsingEngine {
 				
 				// Recupera um jsoup document do link, para recuperar titulo e texto da noticia
 				Document doc = getDocument(url);
+				Elements elements = doc.getAllElements();
 				
 				if ( doc == null ) {
 					continue;
 				}
 				
 				// Procura keywords e nome dos bairros
-				Set<Keyword> foundedKeywords = searchKeywords(doc.title()); // number of keywords occurrences
-				Set<Neighborhood> foundedBairros = searchBairros(doc.title()); // number of keywords occurrences
-				foundedBairros.addAll(ParsingEngine.searchBairros( url ));
-				foundedBairros.addAll(ParsingEngine.searchBairros( doc.text() ));
+				Set<Keyword> foundedKeywords = null;
+				Set<Neighborhood> foundedBairros = null;				
+				for ( Element e : elements ) {
+					//Tag tag = e.tag();
+					//Elements ess = e.getElementsByTag(tag.getTitle());
+					if ( e.text().split(" ").length > 15 && !ParsingEngine.containsBlackList(e.text()) ) {
+						foundedKeywords = searchKeywords( e.text() );
+						foundedBairros = searchBairros( e.text() );
+					}
+				}				
+				foundedBairros.addAll(searchBairros( url ));
 				
 				boolean containsBlackList = containsBlackList( doc.title() );
 				
@@ -270,7 +277,7 @@ public class ParsingEngine {
 
 
 				if (debug) {
-					System.out.printf("url: %s\ntext: %s\n", url, text);
+					System.out.printf("url: %s", url);
 					System.out.println(foundedKeywords);
 					System.out.println(foundedBairros);
 					// Newssites.add

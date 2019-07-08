@@ -3,6 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var Links = require('../schemas/links_schema.js');
+var Repository = require('../schemas/repository_schema.js');
 
 // /links/ will return all links
 router.get("/", (req, res) => {
@@ -70,11 +71,7 @@ router.post("/add", urlencodedParser, async (req, res) => {
 	} else {
 		console.log("LInk already in database")
 		res.status(400).send({statusMsg: "Link already in database"})
-	}
-	// link.link = "oi"
-	// link.save();
-	//console.log(link._id);
-	
+	}	
 
 });
 
@@ -85,6 +82,41 @@ router.post("/remove",urlencodedParser, (req,res) => {
 	console.log(json["_id"])
 	var v = Links.findOneAndDelete(json).exec()
 	return res.send({"status": v.error})
+
+});
+
+// /links/delete will delete a link with given id
+router.post("/removeduplicates",urlencodedParser, async (req,res) => {
+
+	console.log("/removeduplicate")
+	
+	var links = await Links.find({isBaseURL: false}).sort({"link": 1}).exec()
+
+	for ( var i = 0; i < links.length; i++ ){
+		//console.log(links[i])
+
+			// Search for links that contain substring url
+		var v = await Links.find({ "isBaseURL": false, "link" : { "$regex": links[i].link, "$options" : "i" } }).exec()
+
+		if ( v.length < 2 )
+			continue
+
+		// Remove duplicated news
+		for ( var i = 1; i < v.length; i++ ){
+			var r = await Repository.findOneAndRemove({ link: v[i]._id }).exec()
+			console.log(r)
+		}
+
+		// remove duplicated links
+		for ( var i = 1; i < v.length; i++ ){
+			v[i].remove()
+			//var l = await Links.findOneAndRemove({ link: v[i]._id }).exec()
+			//console.log(r)
+		}
+		return;
+	}
+
+	res.status(200).send()
 
 });
 
