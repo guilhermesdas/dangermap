@@ -89,28 +89,34 @@ router.post("/remove",urlencodedParser, (req,res) => {
 router.post("/removeduplicates",urlencodedParser, async (req,res) => {
 
 	console.log("/removeduplicate")
-	var url = req.param("url")
+	
+	var links = await Links.find({isBaseURL: false}).sort({"link": 1}).exec()
 
-	// Search for links that contain substring url
-	var v = await Links.find({ link : { "$regex": url, "$options" : "i" } }).exec()
-	console.log(v.length)
-	if ( v.length < 2 )
-		return res.status(400).json({message: "No duplication"})
+	for ( var i = 0; i < links.length; i++ ){
+		//console.log(links[i])
 
-	// Remove duplicated news
-	for ( var i = 1; i < v.length; i++ ){
-		var r = await Repository.findOneAndRemove({ link: v[i]._id }).exec()
-		console.log(r)
+			// Search for links that contain substring url
+		var v = await Links.find({ "isBaseURL": false, "link" : { "$regex": links[i].link, "$options" : "i" } }).exec()
+
+		if ( v.length < 2 )
+			continue
+
+		// Remove duplicated news
+		for ( var i = 1; i < v.length; i++ ){
+			var r = await Repository.findOneAndRemove({ link: v[i]._id }).exec()
+			console.log(r)
+		}
+
+		// remove duplicated links
+		for ( var i = 1; i < v.length; i++ ){
+			v[i].remove()
+			//var l = await Links.findOneAndRemove({ link: v[i]._id }).exec()
+			//console.log(r)
+		}
+		return;
 	}
 
-	// remove duplicated links
-	for ( var i = 1; i < v.length; i++ ){
-		v[i].remove()
-		//var l = await Links.findOneAndRemove({ link: v[i]._id }).exec()
-		//console.log(r)
-	}
-
-	res.status(200).send(v[0])
+	res.status(200).send()
 
 });
 
