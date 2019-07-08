@@ -20,8 +20,9 @@ import newssites.*;
 public class ParseTest implements Runnable {
 	
 	public static void main(String[] args) {
-		
-		String url = "https://d.emtempo.com.br/policia/163288/em-manaus-homem-que-cumpre-pena-no-regime-aberto-desaparece";
+
+				
+		/*String url = "https://d.emtempo.com.br/policia/163288/em-manaus-homem-que-cumpre-pena-no-regime-aberto-desaparece";
 		Document doc = ParsingEngine.getDocument(url);
 		Elements es = doc.getAllElements();
 		ParsingEngine.init();
@@ -30,9 +31,11 @@ public class ParseTest implements Runnable {
 			//Elements ess = e.getElementsByTag(tag.getTitle());
 			if ( e.text().split(" ").length > 15 && !ParsingEngine.containsBlackList(e.text()) )
 				System.out.println( e.text() + e.id() );
-		}
+		}*/
 		
 		//updateAllBriefs();
+		
+		new Thread( new ParseTest() ).run();
 		
 	}
 	
@@ -79,7 +82,6 @@ public class ParseTest implements Runnable {
 
 			int minutes;
 			int seconds;
-			
 
 			while (true) {
 				
@@ -99,7 +101,7 @@ public class ParseTest implements Runnable {
 
 			}
 			
-		} catch (ParseException | InterruptedException e) {
+		} catch (ParseException | InterruptedException  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

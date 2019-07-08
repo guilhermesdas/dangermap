@@ -18,27 +18,6 @@ router.get("/", (req, res) => {
 });
 
 // /links/ will return all links
-router.get("/get", (req, res) => {
-	console.log("getting one link.")
-
-	console.log(req.body)
-	var json = JSON.parse(req.body)
-
-
-	console.log(json)
-	res.send("oi")
-	return
-
-	Links.findOne({ "link": res.body["link"] }, (err,links) => {
-		if (err) {
-			res.send(err);
-		} else {
-			res.send(links);
-		}		
-	})
-});
-
-// /links/ will return all links
 router.get("/seeds", (req, res) => {
 	console.log("listing all seeds.");	
 	Links.find({"isBaseURL": true}, (err,links) => {
@@ -50,6 +29,19 @@ router.get("/seeds", (req, res) => {
 	})
 });
 
+router.get("/find" , urlencodedParser, async (req,res) => {
+
+	// Param link
+	var link = req.query.link;
+	//console.log(link)
+
+	const links = await Links.find({ "isBaseURL": false, "link" : { "$regex": link, "$options" : "i" } }).exec()
+							.catch(err => res.json({status: false, statusMsg: err}) );
+
+	res.status(200).send(links)
+
+})
+
 // /links/add will add a new link
 router.post("/add", urlencodedParser, async (req, res) => {
 
@@ -60,13 +52,14 @@ router.post("/add", urlencodedParser, async (req, res) => {
 		"link" : req.body.link,
 		"isBaseURL" : req.body.isBaseURL
 	}
-	console.log(json)
-	const flinks = await Links.find(json).exec()
+
+	const flinks = await Links.find({ "isBaseURL": false, "link" : { "$regex": json.link, "$options" : "i" } }).exec()
 							.catch(err => res.json({status: false, statusMsg: err}) );
 	if ( flinks.length == 0 ){
 		const link = await Links.create(json)
 								.catch(err => res.json({status: false, statusMsg: err}) )
-		console.log("LInk added: " + link)
+		//console.log("LInk added: " + link)
+		console.log("New link added: " + link)
 		res.status(200).json(link)
 	} else {
 		console.log("LInk already in database")
@@ -88,7 +81,7 @@ router.post("/remove",urlencodedParser, (req,res) => {
 // /links/delete will delete a link with given id
 router.post("/removeduplicates",urlencodedParser, async (req,res) => {
 
-	console.log("/removeduplicate")
+	console.log(req.url)
 	
 	var links = await Links.find({isBaseURL: false}).sort({"link": 1}).exec()
 
