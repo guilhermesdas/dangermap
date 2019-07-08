@@ -70,7 +70,7 @@ public class ParsingEngine {
 		if (arg.equals("debug"))
 			debug = true;
 
-		for ( int i = links_db.size()-1; i >= 0; i-- ) {
+		for ( int i = 0; i < links_db.size(); i++ ) {
 			parse( links_db.get(i).getLink() );
 		}
 		
@@ -316,7 +316,7 @@ public class ParsingEngine {
 					Newssites.addRepository(linkToAdd.get_id(),
 							foundedBairros.iterator().next().get_id(), 
 							keywords_id,
-							doc.title());
+							Newssites.removeBugInChar( doc.title()) );
 
 				}
 

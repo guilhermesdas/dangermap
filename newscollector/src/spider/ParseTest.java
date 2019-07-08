@@ -20,7 +20,8 @@ import newssites.*;
 public class ParseTest implements Runnable {
 	
 	public static void main(String[] args) {
-		
+
+				
 		/*String url = "https://d.emtempo.com.br/policia/163288/em-manaus-homem-que-cumpre-pena-no-regime-aberto-desaparece";
 		Document doc = ParsingEngine.getDocument(url);
 		Elements es = doc.getAllElements();

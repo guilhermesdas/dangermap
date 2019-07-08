@@ -64,7 +64,7 @@ public class Newssites {
 		s = s.replaceAll("‘", "\"");
 		s = s.replaceAll("’", "\"");
 		s = s.replaceAll("”", "\"");
-		byte[] txt =  removeBugInChar(s).getBytes(UTF_8);
+		byte[] txt =  s.getBytes(UTF_8);
 		String brief = new String( txt, ISO_8859_1 );//ParsingEngine.getDocument(url).title(); //
 		
 		return brief;
