@@ -96,20 +96,4 @@ router.post("/add", urlencodedParser, (req, res) => {
 
 });
 
-// /repository/add will add a repository
-router.post("/add", urlencodedParser, (req, res) => {
-
-	//var json = Object.assign({}, REPOSITORY_JSONIN);
-	var json = req.body;
-	console.log(JSON.stringify(json));
-	var v = Repository.create(json)
-	if (v == null || v == undefined)
-		res.send({ status: false });
-	else{
-		console.log("new repository added:\n", json);
-		res.send({status: true})
-	}
-
-});
-
 module.exports = router;

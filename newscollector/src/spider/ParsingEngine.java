@@ -44,14 +44,14 @@ public class ParsingEngine {
 			bairros = Newssites.getNeighborhoods();
 			blackList = Newssites.getBlackList();
 			ArrayList<Repository> reps = Newssites.getRepository();
-			/*for ( Repository r : reps ) {
+			for ( Repository r : reps ) {
 				try{
 					links_db.add(r.getLink());				
 				} catch ( NullPointerException e ) {
 					
 				}
-			}*/
-			links_db.addAll( Newssites.getLinks() );
+			}
+			//links_db.addAll( Newssites.getLinks() );
 			//System.out.println(links_db);
 			System.out.println(links_db.size());
 			return true;
@@ -70,8 +70,12 @@ public class ParsingEngine {
 		if (arg.equals("debug"))
 			debug = true;
 
-		for ( int i = 0; i < links_db.size(); i++ ) {
-			parse( links_db.get(i).getLink() );
+		for ( int i = links_db.size()-1; i >= 0; i-- ) {
+			
+			System.out.printf("%d links restantes!\n", i);			
+			System.out.printf("Added %d links from %s\n",
+					parse( links_db.get(i).getLink() ),
+					links_db.get(i).getLink() );
 		}
 		
 	}
@@ -82,7 +86,7 @@ public class ParsingEngine {
 		if (arg.equals("debug"))
 			debug = true;
 
-		parse(seed);
+		System.out.printf("Added %d links from %s\n", parse(seed), seed );
 
 	}
 	
@@ -219,8 +223,10 @@ public class ParsingEngine {
 		return links;
 	}
 	
-	private static void parse(String linkstr) throws InterruptedException, ParseException {
+	private static int parse(String linkstr) throws InterruptedException, ParseException {
 			
+		int addedLinks = 0;
+		
 		if ( debug ) {
 			System.out.println("Source: " + linkstr);
 		}
@@ -230,7 +236,7 @@ public class ParsingEngine {
 		int totalLinks = 0;
 
 		if ( linkstr.contains("portaldoholanda") )
-			return;
+			return 0;
 		
 		// Get elements from link
 		links = getURL(linkstr);
@@ -248,6 +254,7 @@ public class ParsingEngine {
 				
 				String url = link.attr("abs:href"); //.replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 				
+				// Skip all links with portaldoholanda
 				if ( url.contains("portaldoholanda") )
 					continue;
 				
@@ -287,8 +294,7 @@ public class ParsingEngine {
 					System.out.println(foundedKeywords);
 					System.out.println(foundedBairros);
 					// Newssites.add
-				} else
-					System.out.println(".");
+				}
 				
 				Link linkToAdd = null;
 				
@@ -298,11 +304,11 @@ public class ParsingEngine {
 						System.out.println("Adding url in links...");
 					}
 					linkToAdd = Newssites.addLink(url, false);	
-				}
-				
+				}				
 				if ( linkToAdd == null )
 					continue;
-
+				addedLinks++;
+				
 				// Adiciona no repositório caso encontre uma notícia com alguma das palavras chave
 				// e o nome de algum bairro de manaus
 				if (!foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
@@ -322,6 +328,8 @@ public class ParsingEngine {
 
 			}
 		}
+		
+		return addedLinks;
 		
 	}
 

@@ -20,7 +20,7 @@ import br.com.thundera.Model.Repository;
 public class HTTPService extends AsyncTask<Void, Void, ArrayList<Repository>> {
 
 //    private static final String ip = "192.168.43.84";
-    private static final String ip = "192.168.43.10";
+    private static final String ip = "192.168.1.103";
 //    private static final String ip = "192.168.1.127";
     private String bairro_id;
     static final JSONParser parser = new JSONParser();
