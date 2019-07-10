@@ -37,21 +37,25 @@ public class ParsingEngine {
 	public static ArrayList<Keyword> blackList;
 	public static ArrayList<Neighborhood> bairros;
 	public static ArrayList<Link> links_db = new ArrayList<Link>();
+	private static String userAgent = "DuckDuckBot/1.0; (+http://duckduckgo.com/duckduckbot.html)";
+	private static Set<String> foundedLinks = new HashSet<String>();
 	
 	public static boolean init() {
 		try {
+			
 			whiteList = Newssites.getKeywords();
 			bairros = Newssites.getNeighborhoods();
 			blackList = Newssites.getBlackList();
 			ArrayList<Repository> reps = Newssites.getRepository();
-			/*for ( Repository r : reps ) {
+			links_db.clear();
+			for ( Repository r : reps ) {
 				try{
 					links_db.add(r.getLink());				
 				} catch ( NullPointerException e ) {
 					
 				}
-			}*/
-			links_db.addAll( Newssites.getLinks() );
+			}
+			//links_db.addAll( Newssites.getLinks() );
 			//System.out.println(links_db);
 			System.out.println(links_db.size());
 			return true;
@@ -70,10 +74,14 @@ public class ParsingEngine {
 		if (arg.equals("debug"))
 			debug = true;
 
-		for ( int i = 0; i < links_db.size(); i++ ) {
-			parse( links_db.get(i).getLink() );
+		System.out.println("Search from seeds");
+		for ( int i = links_db.size()-1; i >= 0; i-- ) {
+			
+			System.out.printf("%d links restantes!\n", i);			
+			System.out.printf("Added %d links from %s\n",
+					parse( links_db.get(i).getLink() ),
+					links_db.get(i).getLink() );
 		}
-		
 	}
 	
 	// Start spider with only one seed
@@ -82,7 +90,7 @@ public class ParsingEngine {
 		if (arg.equals("debug"))
 			debug = true;
 
-		parse(seed);
+		System.out.printf("Added %d links from %s\n", parse(seed), seed );
 
 	}
 	
@@ -165,8 +173,7 @@ public class ParsingEngine {
 				if (!url.startsWith("http://") && !url.startsWith("https://"))
 					url = "http://" + url;
 
-				document = Jsoup.connect(url).userAgent(
-						"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
+				document = Jsoup.connect(url).userAgent(userAgent)
 						.followRedirects(false).timeout(10000).get();
 				sucess = true;
 				break;
@@ -219,8 +226,11 @@ public class ParsingEngine {
 		return links;
 	}
 	
-	private static void parse(String linkstr) throws InterruptedException, ParseException {
+	private static int parse(String linkstr) throws InterruptedException, ParseException {
 			
+		int addedLinks = 0;
+		int cantAcess = 0;
+		
 		if ( debug ) {
 			System.out.println("Source: " + linkstr);
 		}
@@ -230,7 +240,7 @@ public class ParsingEngine {
 		int totalLinks = 0;
 
 		if ( linkstr.contains("portaldoholanda") )
-			return;
+			return 0;
 		
 		// Get elements from link
 		links = getURL(linkstr);
@@ -248,17 +258,21 @@ public class ParsingEngine {
 				
 				String url = link.attr("abs:href"); //.replace("'", "''").replaceAll("[\\t\\n\\r]", " ");
 				
+				// Skip all links with portaldoholanda
 				if ( url.contains("portaldoholanda") )
 					continue;
 				
 				// Pula caso link já esteja salvo ou contenha uma keyword na blacklist
-				if ( !Newssites.findLinks(url).isEmpty() || containsBlackList( url ) )
+				if ( containsBlackList(url) )
+					continue;
+				if ( !Newssites.findLinks(url).isEmpty() )
 					continue;
 				
 				// Recupera um jsoup document do link, para recuperar titulo e texto da noticia
 				Document doc = getDocument(url);
 				
 				if ( doc == null ) {
+					cantAcess++;
 					continue;
 				}
 				
@@ -277,8 +291,7 @@ public class ParsingEngine {
 				foundedBairros.addAll(searchBairros( url ));
 				
 				boolean containsBlackList = containsBlackList( doc.title() );
-				
-				Thread.sleep(delay);
+
 				totalKeyWords = totalKeyWords + foundedKeywords.size();
 
 
@@ -287,8 +300,7 @@ public class ParsingEngine {
 					System.out.println(foundedKeywords);
 					System.out.println(foundedBairros);
 					// Newssites.add
-				} else
-					System.out.println(".");
+				}
 				
 				Link linkToAdd = null;
 				
@@ -298,11 +310,12 @@ public class ParsingEngine {
 						System.out.println("Adding url in links...");
 					}
 					linkToAdd = Newssites.addLink(url, false);	
-				}
-				
+				}				
 				if ( linkToAdd == null )
 					continue;
-
+				addedLinks++;
+				foundedLinks.add(url);
+				
 				// Adiciona no repositório caso encontre uma notícia com alguma das palavras chave
 				// e o nome de algum bairro de manaus
 				if (!foundedBairros.isEmpty() && !foundedKeywords.isEmpty() ) {
@@ -322,6 +335,10 @@ public class ParsingEngine {
 
 			}
 		}
+		
+		System.out.printf("Cant acess %d links!\n", cantAcess);
+		
+		return addedLinks;
 		
 	}
 

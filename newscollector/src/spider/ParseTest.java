@@ -51,25 +51,30 @@ public class ParseTest implements Runnable {
 			return;
 		}
 		
+		int skippedNews = 0;		
 		
 		// Update all briefs
-		for ( Repository rep : reps ) {
+		for ( int i = 0; i < reps.size(); i++) {
 
 			// Get document from url
-			Document doc = ParsingEngine.getDocument(rep.getLink().getLink());
+			Document doc = ParsingEngine.getDocument(reps.get(i).getLink().getLink());
 			
 			if ( doc == null ) {
+				skippedNews++;
 				continue;
 			}
 
 			// Encoding string correctly
-			byte[] txt =  Newssites.removeBugInChar( doc.title()).getBytes(UTF_8);
-			String brief = new String( txt, ISO_8859_1 );
 			
-			JSONObject response = Newssites.updateRepositoryBrief(rep.get_id(), brief );
+			JSONObject response = Newssites.updateRepositoryBrief(reps.get(i).get_id(),
+					Newssites.removeBugInChar( doc.title() ) );
 			System.out.println( response.toString() );
+			System.out.println("Rep index: " + i);
 			
 		}
+		
+		System.out.println("Skipped news: " + skippedNews );
+		
 	}
 
 	@Override

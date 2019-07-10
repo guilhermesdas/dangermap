@@ -85,9 +85,10 @@ public class Newssites {
 			//ArrayList list = new ArrayList();
 			
 			return array;
-			
-		} catch (IOException e) {
+			 
+		} catch (IOException | ClassCastException | NullPointerException e) {
 			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			return (JSONArray) parser.parse(requestError);
 		}
 	}
@@ -98,8 +99,9 @@ public class Newssites {
 			String response = Requests.sendPost(url, data);
 			return (JSONObject) parser.parse(response);
 			
-		} catch (IOException e) {
+		} catch (IOException | ClassCastException | NullPointerException e) {
 			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			return (JSONObject) parser.parse(requestError);
 		}
 		
