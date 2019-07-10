@@ -42,18 +42,20 @@ public class ParsingEngine {
 	
 	public static boolean init() {
 		try {
+			
 			whiteList = Newssites.getKeywords();
 			bairros = Newssites.getNeighborhoods();
 			blackList = Newssites.getBlackList();
-			/*ArrayList<Repository> reps = Newssites.getRepository();
+			ArrayList<Repository> reps = Newssites.getRepository();
+			links_db.clear();
 			for ( Repository r : reps ) {
 				try{
 					links_db.add(r.getLink());				
 				} catch ( NullPointerException e ) {
 					
 				}
-			}*/
-			links_db.addAll( Newssites.getLinks() );
+			}
+			//links_db.addAll( Newssites.getLinks() );
 			//System.out.println(links_db);
 			System.out.println(links_db.size());
 			return true;
@@ -261,7 +263,9 @@ public class ParsingEngine {
 					continue;
 				
 				// Pula caso link já esteja salvo ou contenha uma keyword na blacklist
-				if ( !Newssites.findLinks(url).isEmpty() || containsBlackList( url ) )
+				if ( containsBlackList(url) )
+					continue;
+				if ( !Newssites.findLinks(url).isEmpty() )
 					continue;
 				
 				// Recupera um jsoup document do link, para recuperar titulo e texto da noticia
